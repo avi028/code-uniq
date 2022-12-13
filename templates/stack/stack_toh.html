@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>TowerOfHanoi</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+    <link rel="stylesheet" href=" {% static 'css/main.css' %}">
+    <script src="{% static 'js/ace-builds-master/src/ace.js' %}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'js/lib.js' %}"></script>
+    <script src="{% static 'js/toh.js' %}"></script>
+    <script src="{% static 'js/button.js' %}"></script>
+    <script src="{% static 'js/init.js' %}"></script>
+    <!-- <script src="toh.js" type="text/javascript" charset="utf-8"></script> -->
+  
+</head>
+<body>
+    <div class='grid'>
+        <div class="navbar1">
+        
+            <a href="/dashboard">Home</a>
+            <a href="/linkedlist">Linked List</a>
+            <a class="active" href="/stack">Stack</a>
+            <a   href="/queue">Queue</a>
+            <a  href="/searching">Searching</a>
+            <a href="/sorting">Sorting</a>
+           <a id='logout' href="/logout"><button type="button"  style="color:rgb(216, 210, 210); background-color: red;" >Logout</button></a>
+            
+      </div>
+        <div class='col-1-1' id="parent" style=width:59%>
+            <div id="editor">void MoveDisc(struct Stack *src, struct Stack*des, char s, char d) 
+{ 
+    int top1,top2;
+    top1=pop(src);
+    top2 =pop(des);
+    if (top1 == -1) 
+    { 
+        push(src,top2); 
+        PerformDiscMove(top2, d, s); 
+    } 
+    else if (top2 ==-1) 
+    { 
+        push( des,top1); 
+        PerformDiscMove(top1, s, d); 
+    } 
+    else if (top1 >top2) 
+    { 
+        push(src, top1);
+        push(src, top2); 
+        PerformDiscMove(top2, d, s); 
+    } 
+    else
+    { 
+        push( des,top2); 
+        push( des,top1); 
+        PerformDiscMove(top1, s, d); 
+    } 
+} 
+void TowerOfHanoi(int n_discs, struct Stack*src, struct Stack *des , struct Stack *aux) 
+{  
+    char s = 'S', d = 'D',a = 'A'; 
+    int n_moves =pow(2, n_discs) - 1; 
+    
+    //  if n is even swap aux and des
+    if (n_discs % 2== 0) {
+        d = 'A';
+        a = 'D';
+    } 
+
+    for (int i =n_discs; i >= 1; i--) {
+        push(src,i); 
+    }
+    
+    // iteration of each i upto number of moves
+    for (int i = 1; i <= n_moves; i++) { 
+        if (i % 3== 0){
+                MoveDisc(aux, des, a, d); 
+        }
+        else if (i% 3 == 2) {
+                MoveDisc(src,aux, s, a); 
+        }
+        else if (i% 3 == 1){ 
+                MoveDisc(src,des, s, d); 
+        }
+    } 
+}  
+
+int main() { 
+    int n_discs=<span id="n_discVal">____</span>;    
+    Stack* src,* des, *aux;
+
+    // Creating 3 stacks for the three Rods           
+    src =Create_stack(n_discs); 
+    des =Create_stack(n_discs);   
+    aux =Create_stack(n_discs); 
+
+    TowerOfHanoi(n_discs,src, aux, des);
+
+    // delete dynamically allocated memory stacks
+    delete src;
+    delete aux;
+    delete des;
+    return 0; 
+}   </div>
+    </div>
+    <div class='col-1-1 unselectable' id='animation_box' style="width:40%">
+        <div class="toh_animation" id='box'>
+            <div class='tower-div'>
+                <div class = 'tower'>
+                </div>
+                <div class = 'tower'>
+                </div>
+                <div class = 'tower'>
+                </div>
+                <div class='base-div base'>
+                </div>
+                <div class='ring3 ring-style'>
+                </div>
+                <div class='ring2 ring-style'>
+                </div>
+                <div class='ring1 ring-style'>
+                </div>
+            </div>
+            <div class='marking'>
+                <div id='src_id'>SRC</div>
+                <div id='des_id'>DES</div>
+                <div id='aux_id'>AUX</div>
+            </div>
+            <div id='input_set' class='toh_input'>
+                <div>
+                    <div id='set_no_disc'>
+                        <select  id="nDisc_val" class='value_input'>
+                            <option value="3">3</option>
+                            <option value="2">2</option>
+                            </select>
+                        <button type="button" class="value_input value_input_create" onclick="setNoOfDisc()" id='set_ndisc_buton'>
+                            Set Disc Count
+                        </button>        
+                    </div>    
+                </div>
+            </div>
+            </div>
+    </div>
+    <div class="toh">
+        <div id='variable_set' class="unselectable">
+        <div id='constants'></div>
+        <div id='temp'></div>
+        <div id='heap'></div>
+        </div>
+    </div>
+    <div id='control_set'>
+        <button id="play_btn" class='button button_play' onclick="playButton()">PLAY</button>        
+        <button id="step_btn" class='button button_next' onclick="stepButton()">STEP</button>        
+        <button id="step2_btn" style="display:none" onclick="loop()">STEP</button>        
+        <button id="reset_btn" class='button button_reset'onclick="resetButton()">RESET</button>
+        <a href="/done/stackAppl"><button class='button button_reset'>Done</button></a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Producer Consumer Problem</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+    <link rel="stylesheet" href=" {% static 'css/main.css' %}">
+    <script src="{% static 'js/ace-builds-master/src/ace.js' %}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'js/lib.js' %}"></script>
+    <script src="{% static 'js/hash_with_chain.js' %}"></script>
+    <script src="{% static 'js/button.js' %}"></script>
+    <script src="{% static 'js/init.js' %}"></script>
+    <link href='https://fonts.googleapis.com/css?family=Autour One' rel='stylesheet' >
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+</head>
+<body>
+    <div class='grid'>
+        <div class="navbar1">
+        
+            <a href="/dashboard">Home</a>
+            <a class="active" href="/linkedlist">Linked List</a>
+            <a href="/stack">Stack</a>
+            <a href="/queue">Queue</a>
+            <a  href="/searching">Searching</a>
+            <a  href="/sorting">Sorting</a>
+           <a id='logout' href="/logout"><button type="button"  style="color:rgb(216, 210, 210); background-color: red;" >Logout</button></a>
+            
+           </div>
+
+           <div id="id03" class="popup">
+            <div class="modal-content">
+           <span onclick="document.getElementById('id03').style.display='none'" class="close">&times;</span>
+           <p style="color: 	#3f0f0f;font-family:  'Autour One';font-size: 20px;">Error in Size.</p>
+         </div>
+         </div>
+        <div class='col-1-1' id="parent">
+            <div id="editor">struct node {
+    int val;
+    struct node *next;
+};
+
+struct node* hashtable;
+
+void createHashTable(int size) {
+    hashtable = malloc(size * sizeof(struct node*));
+}
+
+void insertIntoHashTable(int val) {
+    int index = val % hashtableSize;
+    hashtable[index].insert(val);
+}
+
+void deleteFromHashTable(int val) {
+    int index = val % hashtableSize;
+    hashtable[index].delete(val);
+}</div>
+    </div>
+    <div class='col-1-1' id='animation_box'>
+        <div id='temp'></div>
+        <!-- <div class="stack">
+            <div id='prods'>
+                <div id='temp2'></div>
+            </div> 
+            <div id='variable_set' class="unselectable">
+                <div id='heap'></div>
+            </div>
+            <div id='cons'>
+                <div id='temp1'></div>
+            </div>                  
+        </div>  -->
+    </div>
+
+    <div id='control_set'>
+        <button id="play_btn" class='button button_play' onclick="playButton()">PLAY</button>        
+        <button id="step_btn" class='button button_next' onclick="stepButton()">STEP</button>        
+        <button id="reset_btn" class='button button_reset'onclick="resetButton()">RESET</button>
+        <a href="/done/linkedListAppl"><button class='button button_reset'>Done</button></a>
+    </div>
+
+    <div id='input_set'>
+        <div>
+            <div id='create_struct'>
+                <input type="text" name="" id="max_size" placeholder="Enter Size of Hashtable" class='value_input'>
+                <button type="button" class="value_input value_input_create" onclick="createHashTable()">
+                    Create Hash Table
+                </button>        
+            </div>    
+        </div>
+        <div id='stack_ops'>
+            <div id='stack_push' class='col-1-1'>
+                <input type="text" name="" id="insert_val" class='value_input'>
+                <button type="button" class="value_input value_input_push" id="insert" onclick="insertVal()" disabled>
+                Insert
+                </button>   
+            </div>
+            <div id='stack_pop'  class='col-1-1'>
+                <input type="text" name="" id="delete_val" class='value_input'>
+                <button type="button" class="value_input value_input_push" id="delete" onclick="deleteVal()" disabled>
+                Delete
+                </button>    
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

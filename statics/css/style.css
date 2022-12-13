@@ -1,0 +1,286 @@
+
+body{
+	font-family: 'Open Sans', sans-serif;
+	background: url(../images/restaurant.png);
+    min-height: 900px;
+    position: relative;
+}
+
+ /* h1 {
+  font: size 50px;
+  font-weight: 600;
+  color: rgb(156, 15, 15);
+  text-align: center;
+  margin: 6em 0em 0em 0em;
+  
+} */
+h1 { color: #111;
+   font-family: 'Autour One';
+    font-size: 350px;
+     font-weight: bold;
+      letter-spacing: -1px;
+       line-height: 1; 
+       text-align: center; 
+       padding-top: 5%;
+      }
+
+.login {
+ 
+  width: 33%;
+ 
+  padding: 15px 0px 0px 0px;
+  border-radius: 5px;
+  background:rgb(238, 236, 236);
+  margin: 110px auto 0;
+  box-shadow: 
+  inset 0 5px 3px rgba(255,255,255,.22),
+  0 0 10px 10px rgba(0,0,0,.1), 
+  0 5px 4px rgba(0,0,0,.2);
+}
+.login h2 {
+  font-size: 30px;
+  font-weight: 700;
+  color: #000;
+  text-align:center;
+}
+.login form input[type="email"] {
+  outline: none;
+  font-size: 19px;
+  font-weight: 400;
+  color: #0f81ec;
+  padding: 10px 20px 10px 46px;
+  border: 1px solid #2DC2BC;
+  border-radius: 5px;
+  margin: 0 auto 15px;
+  width: 60%;
+  -webkit-appearance: none;
+}
+form {
+  padding: 22px 0px 0px 0px;
+}
+.login input[type="password"] {
+  outline: none;
+  font-size: 19px;
+  font-weight: 400;
+  padding: 10px 20px 10px 45px;
+  border: 1px solid #2DC2BC;
+  border-radius: 5px;
+  margin: 0 auto 11px;
+  width: 60%;
+  -webkit-appearance: none;
+  color:#0f81ec;
+}
+.login-bwn {
+  text-align: center;
+}
+.login input[type="submit"] {
+  background: #2DC2BC;
+  color: #FFF;
+  font-size: 18px;
+  font-weight: 400;
+  padding: 6px 0px;
+  width: 20%;
+  cursor: pointer;
+  outline: none;
+  margin: 15px 0px 5px 0px;
+  border: none;
+  border-radius: 5px;
+}
+.login input[type="submit"]:hover {
+	background:rgb(160, 6, 6);
+	transition: 0.5s all;
+  -webkit-transition: 0.5s all;
+  -moz-transition: 0.5s all;
+  -o-transition: 0.5s all;
+}
+.login form input.user {
+  background: url(../images/user.png)no-repeat 15px 13px #fff;
+  display: block;
+}
+.login form input.lock {
+  background: url(../images/key.png)no-repeat 15px 13px #fff;
+  display: block;
+}
+
+
+
+.login-bottom {
+  text-align: center;
+  background: rgba(236, 236, 236, 0.29);
+  padding: 0px 0px 40px 0px;
+  border-bottom-left-radius:5px;
+   border-bottom-right-radius:5px;
+     padding: 0 1.5em 2em;
+}
+.login-bottom h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #000;
+  padding: 25px 0px 0px 0px;
+}
+.login-bottom p {
+  font-size: 15px;
+  font-weight: 400;
+  color: #000;
+  margin: 4px 0px 10px 0px;
+}
+
+
+.login-para p {
+  padding: 0px 4px 0px 0px;
+}
+.login-check {
+  float: left;
+}
+.login-para {
+  float: right;
+}
+.login-para p a {
+  font-size: 15px;
+  font-weight: 400;
+  color: rgb(219, 0, 0);
+}
+.login-para p a:hover {
+   color:#999;
+   transition: 0.5s all;
+  -webkit-transition: 0.5s all;
+  -moz-transition: 0.5s all;
+  -o-transition: 0.5s all;
+}
+.login-bottom h4 {
+  font-size: 16px;
+  font-weight: 400;
+  color: #000;
+  margin: 20px 0px 0px 0px;
+}
+.login-bottom h4 a{
+  font-size: 16px;
+  font-weight: 400;
+  color:rgb(219, 0, 0);
+}
+.login-bottom h4 a:hover{
+	color: #2DC2BC;
+	transition: 0.5s all;
+  -webkit-transition: 0.5s all;
+  -moz-transition: 0.5s all;
+  -o-transition: 0.5s all;
+}
+.reg-bwn {
+  margin: 25px 0px 0px 0px;
+}
+.reg-bwn a {
+  font-size: 16px;
+  font-weight: 500;
+  color: #fff;
+  background: #2DC2BC;
+  padding: 8px 25px;
+  border-radius: 5px;
+}
+.reg-bwn a:hover{
+  background: rgb(219, 0, 0);
+  transition: 0.5s all;
+  -webkit-transition: 0.5s all;
+  -moz-transition: 0.5s all;
+  -o-transition: 0.5s all;
+}
+.button a {
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  margin: 0px 1.5% 0px 0px;
+  border-radius: 4px;
+  float:left;
+  width:32.33%;
+    padding: 0px 0;
+}
+
+
+
+
+
+
+.button {
+  padding: 20px 0px 42px 0px;
+  border-bottom: 1px solid #ccc;
+}
+h3 {
+  font-size: 2em;
+  font-weight: 600;
+  color: #fff;
+  text-align: center;
+  margin-top: 1em;
+}
+.clear{
+	clear:both;
+}
+
+/*--media quries start here--*/
+
+
+
+@media(max-width:440px){
+.button a {
+  float: none;
+  width: 100%;
+  margin-bottom: 1em;
+}
+}
+@media (max-width: 320px){
+h1 {
+  font-size: 1.5em;
+}
+.login {
+  width: 90%;
+  margin: 25px auto 0;
+  padding: 10px 0px 0px 0px;
+}
+.login h2 {
+  font-size: 22px;
+}
+form {
+  padding: 15px 0px 0px 0px;
+}
+.login form input[type="text"],.login input[type="password"] {
+  font-size: 13px;
+    padding: 9px 20px 9px 45px;
+	width: 66%;
+}
+.forgot {
+  width: 90%;
+}
+.forgot .checkbox {
+  font-size: 13px;
+}
+ .login-check {
+  margin-top: 3px;
+}
+.login-para p a {
+  font-size: 13px;
+}
+.login input[type="submit"] {
+  font-size: 15px;
+    width: 25%;
+}
+.button a {
+  float: none;
+  width: 100%;
+  margin-bottom: 1em;
+}
+.button {
+  padding: 9px 0px 17px 0px;
+}
+.login-bottom h4,.login-bottom h4 a {
+  font-size: 13px;
+}
+.reg-bwn a {
+  padding: 6px 18px;
+}
+.login-bottom h3 {
+  padding: 15px 0px 0px 0px;
+  margin-top: 0.51em;
+}
+body {
+  min-height: 748px;
+}
+
+}

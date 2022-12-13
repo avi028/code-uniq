@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Merge Sort</title>
+{% load static %}
+<script src="{% static 'js/ace-builds-master/src/ace.js' %}"></script>
+<link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+<link rel="stylesheet" href="{% static 'css/main.css' %}">
+<script src="{% static 'js/lib.js' %}"></script>
+<script src="{% static 'js/merge_sort.js' %}"></script>
+<script src="{% static 'js/button.js' %}"></script>
+<script src="{% static 'js/init.js' %}"></script>
+
+</head>
+<body>
+    <div class='grid'>
+        <div class="navbar1">
+        
+            <a href="/dashboard">Home</a>
+            <a href="/linkedlist">Linked List</a>
+            <a href="/stack">Stack</a>
+            <a href="/queue">Queue</a>
+            <a  href="/searching">Searching</a>
+            <a class="active" href="/sorting">Sorting</a>
+           <a id='logout' href="/logout"><button type="button"  style="color:rgb(216, 210, 210); background-color: red;" >Logout</button></a>
+            
+      </div>
+        <div class='col-1-1' id="parent">
+            <div id="editor">void mergeSort(int arr[], int n) {
+    int curr_size;  
+    int start; 
+
+    for (curr_size=1; curr_size <= n-1; curr_size = 2*curr_size) {
+        for (start=0; start < n-1; start += 2*curr_size) {
+            int mid = min(start + curr_size - 1, n-1);
+            int end = min(start + 2*curr_size - 1, n-1);
+            
+            merge(arr, left_start, mid, end);
+        }
+    }
+}
+
+void merge(int arr[], int l, int m, int r) {
+    int i, j, k;
+    int n1 = m - l + 1;
+    int n2 =  r - m;
+    int L[n1], R[n2];
+
+    for (i = 0; i < n1; i++)
+        L[i] = arr[l + i];
+
+    for (j = 0; j < n2; j++)
+        R[j] = arr[m + 1+ j];
+
+    i = 0; j = 0; k = l;
+    
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j]) {
+            arr[k++] = L[i++];
+        }
+        else {
+            arr[k++] = R[j++];
+        }
+    }
+    while (i < n1) {
+        arr[k++] = L[i++];
+    }
+    while (j < n2) {
+        arr[k++] = R[j++];
+    }
+}
+
+int main(){
+    int arr[] = {5, 4, 3, 2, 1};
+    int n = sizeof(arr)/sizeof(arr[0]);
+ 
+    mergeSort(arr, n);
+ 
+    printArray(arr, n);
+    return 0;
+}</div>
+</div>
+    <div class='col-1-1' id='animation_box'>
+        <div class="stack">
+            <div id='variable_set' class="unselectable">
+                <div id='temp'></div>
+                <div id='heap_row'></div>
+            </div>                    
+        </div>
+    </div>
+</div>
+<div id='control_set'>
+    <button id="play_btn" class='button button_play' onclick="playButton()">PLAY</button>        
+    <button id="step_btn" class='button button_next' onclick="stepButton()">STEP</button>        
+    <button id="reset_btn" class='button button_reset'onclick="resetButton()">RESET</button>
+    <a href="/done/mergeSort"><button class='button button_reset'>Done</button></a>
+</div>
+
+<div id='input_set'>
+    <div>
+        <div id='create_struct'>
+            <input type="text" name="" id="max_size_array" placeholder="Enter Size of Array" class='value_input'>
+            <button type="button" class="value_input value_input_create" onclick="setSize()">
+                Set Size
+            </button>        
+        </div>    
+    </div>
+    <div id='stack_ops'>
+        <div id='stack_push' class='col-1-1'>
+            <div id='input_array_set'>
+            <button type="button" class="value_input value_input_push" id="set_Array_value" onclick="set_Array_value()" disabled>
+                Set Array
+            </button>        
+        </div>
+</div>
+</body>    
+</html>

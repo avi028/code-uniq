@@ -1,0 +1,97 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <title>Linear Search</title>
+    <script src="../../statics/js/ace-builds-master/src/ace.js"></script>
+
+        <link rel="stylesheet" href="../../statics/css/normalize.css">
+        <link rel="stylesheet" href="../../statics/css/main.css">
+
+        <script src="../../statics/js/lib.js"></script>
+        <script src="../../statics/js/linear-search.js"></script>
+        <script src="../../statics/js/button.js"></script>
+        <script src="../../statics/js/init.js"></script>
+        <link href='https://fonts.googleapis.com/css?family=Autour One' rel='stylesheet'>
+
+    </head>
+    <body>
+        <div class="navbar1">
+        
+            <a href="/dashboard">Home</a>
+            <a href="/linkedlist">Linked List</a>
+            <a href="/stack">Stack</a>
+            <a href="/queue">Queue</a>
+            <a class="active" href="/searching">Searching</a>
+            <a href="/sorting">Sorting</a>
+            <a id='logout' href="/logout"><button type="button"  style="color:rgb(216, 210, 210); background-color: red;" >Logout</button></a>
+       </div>
+      <div id="id01" class="popup">
+        <div class="modal-content">
+            <span onclick="document.getElementById('id01').style.display='none'" class="close">&times;</span>
+            <p style="color:	#3f0f0f;font-family:  'Autour One';">Element not Found.</p>
+          </div>
+        </div>
+
+            <div class='col-1-1' id="parent">
+                <div id="editor">int linear_search(int x,int *arr,int n)
+    {
+        int i=0;
+        for (i=0;i < n;i++)
+        {
+            if(arr[i] == x)
+                return 0;
+        }
+        return -1;
+    }
+    
+    int main()
+    {
+        int arr[_] = {_,_,_,_,_};
+        int x = _;
+        linear_search(x,&(arr[0]),_);
+        return 0;
+    }</div>
+    </div>
+        <div class='col-1-1' id='animation_box'>
+            <div class="stack">
+                <div id='variable_set' class="unselectable">
+                    <div id='temp'></div>
+                    <div id='heap'></div>
+                </div>                    
+            </div>
+        </div>
+    </div>
+    <div id='control_set'>
+        <button id="play_btn" class='button button_play' onclick="playButton()">PLAY</button>        
+        <button id="step_btn" class='button button_next' onclick="stepButton()">STEP</button>        
+        <button id="reset_btn" class='button button_reset'onclick="resetButton()">RESET</button>
+        <a href="/done/linearSearch"><button class='button button_reset'>Done</button></a>
+    </div>
+    
+    <div id='input_set'>
+        <div>
+            <div id='create_struct'>
+                <input type="text" name="" id="max_size_array" placeholder="Enter Size of Array" class='value_input'>
+                <button type="button" class="value_input value_input_create" onclick="setSize()">
+                    Set Size
+                </button>        
+            </div>    
+        </div>
+        <div id='stack_ops'>
+            <div id='stack_push' class='col-1-1'>
+                <div id='input_array_set'>
+                <button type="button" class="value_input value_input_push" id="set_Array_value" onclick="set_Array_value()" disabled>
+                    Set Array
+                </button>        
+            </div>
+        </div>
+            <div id='stack_pop'  class='col-1-1'>
+                <input type="text" name="" id="search_val"  class='value_input'>
+                <button type="button" class="value_input value_input_pop" id="SetSearchVal" onclick="SetSearchVal()" disabled>
+                    Search
+                </button>        
+            </div>
+        </div>
+    </div>
+    </body>    
+</html>

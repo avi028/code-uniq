@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: stack.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: stack.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* Code lines numbers for animation change */
+var push_begin = 1;
+var overflow_check = 2;
+var push_ret_err = 3;
+var add_value = 4;
+var push_head_move = 5;
+var retpush = 6;
+var pushend = 7;
+var pop_begin = 10;
+var underflow_check = 11;
+var pop_ret_err = 12;
+var pop_head_move = 14;
+var pop_value = 13;
+var retpop = 15;
+var popend = 16;
+
+// ace editor configuration
+var editor;
+
+//Max stack size
+var stack_size = 0;
+
+//current code line number
+var code_line_itr = 0;
+
+// Total line number of code
+code_line_count=22;
+
+    // assigning unique element id's to any new div 
+var id_count=0;
+
+// FUNCTION VARIABLE TO store the interval function
+var interval;
+
+// stores last highlighted line number to remove
+var line_rem_highlight =0;
+
+//stack object
+var stk_obj=null;
+
+//stack content array
+var stack_content = [];
+
+//top initialisation
+var top1=0; 
+
+//size variable initialisation
+var size=stack_size;
+
+
+/**
+ * Setup the editor.
+ */
+function setUpEditor(){
+    editor = ace.edit("editor");    //the html tag with id 'editor' contains the code to be highlighted
+    editor.setTheme("ace/theme/cobalt");   // set the background theme to cobalt0
+    editor.getSession().setMode("ace/mode/c_cpp");  // sets the langugage for key highlight as c_cpp (both c and c++)
+    editor.setReadOnly(true);   // make the code section as read only
+    Range = ace.require('ace/range').Range;    // Range Object to be used to identity line of code.
+    
+    // removing initial line markers :: removeMarker(Marker id)
+    editor.session.removeMarker(1);
+    editor.session.removeMarker(2);
+    
+    // adding marker to each line of code.
+    const r = [];
+    
+    for(itr=0;itr&lt;code_line_count;itr++)
+    {   
+        r[itr] = new Range(itr, 0,itr, 100);    // marking the range for  code line no &lt;itr>
+        r[itr].id = editor.session.addMarker(r[itr],"foo"+(itr+1),"fullLine");  // class foo&lt;id_count> will act as an identifire for each line
+        // console.log(itr);
+    }
+}
+
+
+// push value
+var pushVal; 
+
+// push html element
+var pushValElm;
+
+//pop value
+var popVal;
+
+//pop html element
+var popValElm;
+
+//parent id
+var parent_id = 'variable_set';
+
+//temp parent id
+var temp = 'temp';
+
+//heap parent id
+var heap = 'heap';
+
+//constant parent id
+var constants = 'constants'
+
+
+
+/**
+ * This function loops over each line of code in editor by checking 
+ * cases according to line number. Every case highlights particular 
+ * line of code, does some opeartion on data structure and changes 
+ * animations accordingly.
+ */
+function loop() {
+    if (code_line_itr != push_begin &amp;&amp; code_line_itr != pop_begin &amp;&amp; code_line_itr != 0) {
+        document.getElementsByClassName('foo'+line_rem_highlight)[0].classList.remove('bar');
+    }
+    // if (stk_obj.top_val.classList.contains('box_label_active')) {
+    //     stk_obj.top_val.classList.remove('box_label_active');
+    // }
+    stk_obj.removeHighlight();
+    switch(code_line_itr) {
+        case push_begin:
+            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
+            line_rem_highlight = code_line_itr;
+            
+            pushValElm = draw_variable('push_val',pushVal,temp);
+            code_line_itr++;
+            break;
+        case overflow_check:
+            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
+            line_rem_highlight = code_line_itr;
+            highlightBoxELement(stk_obj.size_val);
+            highlightBoxELement(stk_obj.top_val);
+            if (top1 == size) {
+                code_line_itr++;    
+            }
+            else {
+                code_line_itr+=2;
+            }
+            break;
+        case push_ret_err:
+            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
+            line_rem_highlight = code_line_itr;
+            code_line_itr = pushend;
+            document.getElementById('id01').style.display='block';
+            break;
+        case push_head_move:
+            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
+            line_rem_highlight = code_line_itr;
+            stk_obj.top_pointer.style.top = 55*(Math.ceil(size/2)-(top1+1))+'px';
+            stk_obj.top_val.innerHTML = top1;
+            highlightBoxELement(stk_obj.top_val);           
+            code_line_itr++;
+            break;
+        case add_value:
+            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
+            line_rem_highlight = code_line_itr;
+            stk_obj.arr_list[size-(top1+1)].innerHTML = pushVal;
+            highlightBoxELement(stk_obj.arr_list[size-(top1+1)]);
+            highlightBoxELement(pushValElm);
+            code_line_itr++;
+            break;
+        case retpush:
+            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
+            line_rem_highlight = code_line_itr;
+            // removeBoxElm(pushValElm);
+            code_line_itr++;
+            break;
+        case pushend:
+            document.getElementsByClassName('foo'+line_rem_highlight)[0].classList.remove('bar');
+            removeBoxElm(pushValElm);
+            clearInterval(interval);
+            code_line_itr=0;
+            playButton(0);
+            disbaleCtrlButtons(play);
+            disbaleCtrlButtons(step);
+            break;
+        case pop_begin:
+            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
+            line_rem_highlight = code_line_itr;
+            popValElm=draw_variable('pop_val',' ',temp);
+            code_line_itr++;
+            break;
+        case underflow_check:
+            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
+            line_rem_highlight = code_line_itr;
+            highlightBoxELement(stk_obj.top_val);
+            if (top1 == -1) {
+                code_line_itr++;    
+            }
+            else {
+                code_line_itr+=2;
+            }
+            break;
+        case pop_ret_err:
+            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
+            line_rem_highlight = code_line_itr;
+            code_line_itr = popend;
+            document.getElementById('id02').style.display='block';
+            break;
+        case pop_head_move:
+            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
+            line_rem_highlight = code_line_itr;
+            top1 = top1-1;
+            stk_obj.top_val.innerHTML = top1;
+            stk_obj.top_val.classList.add('box_label_active');
+            stk_obj.top_pointer.style.top = 55*(Math.ceil(size/2)-(top1+1))+'px';
+            highlightBoxELement(stk_obj.top_val);
+            code_line_itr++;
+            break;
+        case pop_value:
+            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
+            line_rem_highlight = code_line_itr;
+            popVal = stk_obj.arr_list[size-(top1+1)].innerHTML;
+            popValElm.innerHTML = popVal;
+            unhighlightBoxELement(stk_obj.arr_list[size-(top1+1)]);
+            highlightBoxELement(popValElm);
+            stk_obj.arr_list[size-(top1+1)].innerHTML=' ';
+            document.getElementById('pop_val').value=popVal;
+            code_line_itr++;
+            break;
+        case retpop:
+            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
+            line_rem_highlight = code_line_itr;
+            code_line_itr++;
+            break;
+        case popend:
+            document.getElementsByClassName('foo'+line_rem_highlight)[0].classList.remove('bar');
+            code_line_itr=0;
+            removeBoxElm(popValElm);
+            clearInterval(interval);
+            playButton(0);
+            disbaleCtrlButtons(play);
+            disbaleCtrlButtons(step);
+            break;
+    }  
+}
+
+
+/**
+ * Calls push method of stk_obj type
+ */
+function pushStack(){
+    code_line_itr = push_begin;
+    top1 = parseInt(stk_obj.top_val.innerHTML)+1;
+    size = parseInt(stk_obj.size_val.innerHTML);
+    var input = document.getElementById('push_val').value;
+    if(input=='')
+       document.getElementById('id04').style.display='block';
+    else{
+        stack_content.push(input);
+        pushVal=input;
+        loop();
+        EnableCtrlButtons();
+    }
+}
+
+
+
+/**
+ * Calls pop method of stk_obj type
+ */
+function popStack(){
+    code_line_itr = pop_begin;
+    top1 = parseInt(stk_obj.top_val.innerHTML);
+    size = parseInt(stk_obj.size_val.innerHTML);
+    loop();
+    EnableCtrlButtons();
+}
+
+/**
+ * Creates array of stack_max_size and enable push pop and reset button.
+ */
+function createStack(){
+    if (!stk_obj) {
+        stack_size = parseInt(document.getElementById("stack_max_size").value);
+        if(isNaN(stack_size) || stack_size==0)
+        document.getElementById('id03').style.display='block';
+          
+        else{
+            stk_obj = new Stack(heap, stack_size,'stack');
+            document.getElementById("push").disabled = false;
+            document.getElementById("pop").disabled = false;    
+            EnableCtrlButtons('reset');
+        }
+    }
+}  
+
+
+
+/** 
+* this function puts the loop() function  on interval call of 1000 milli sec
+* i.e it is called after every 1000 milli sec of 1 sec
+*/
+function loop_color(){
+    interval = setInterval(loop,1000);
+}
+
+
+
+/**
+ * remove stk_obj
+ * Removes stack animation. Disables push pop buttons. 
+ */
+function reset(){
+    if(stk_obj!=null)
+    {
+        stk_obj.remove();
+    }
+    removeBoxElm(popValElm);
+    removeBoxElm(pushValElm);
+    editor.gotoLine(1);
+    document.getElementById('push_val').value='';
+    document.getElementById('pop_val').value='';
+    document.getElementById('stack_max_size').value='';
+    disbaleCtrlButtons();
+    document.getElementById("push").disabled = true;
+    document.getElementById("pop").disabled = true; 
+    stk_obj=null;  
+    if(line_rem_highlight!=0) 
+    document.getElementsByClassName('foo'+line_rem_highlight)[0].classList.remove('bar'); 
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="linkedList.html">linkedList</a></li><li><a href="Queue.html">Queue</a></li><li><a href="Stack.html">Stack</a></li></ul><h3>Global</h3><ul><li><a href="global.html#consumer">consumer</a></li><li><a href="global.html#create_html_element">create_html_element</a></li><li><a href="global.html#createButtonArr">createButtonArr</a></li><li><a href="global.html#createCons">createCons</a></li><li><a href="global.html#createHashTable">createHashTable</a></li><li><a href="global.html#createLinkedList">createLinkedList</a></li><li><a href="global.html#createProd">createProd</a></li><li><a href="global.html#createQueue">createQueue</a></li><li><a href="global.html#createStack">createStack</a></li><li><a href="global.html#deleteFromLinkedList">deleteFromLinkedList</a></li><li><a href="global.html#deleteVal">deleteVal</a></li><li><a href="global.html#dequeue">dequeue</a></li><li><a href="global.html#draw_array">draw_array</a></li><li><a href="global.html#draw_arrow">draw_arrow</a></li><li><a href="global.html#draw_arrow_color">draw_arrow_color</a></li><li><a href="global.html#draw_boxes">draw_boxes</a></li><li><a href="global.html#draw_fieldset">draw_fieldset</a></li><li><a href="global.html#draw_set">draw_set</a></li><li><a href="global.html#draw_variable">draw_variable</a></li><li><a href="global.html#enqueue">enqueue</a></li><li><a href="global.html#highlightBoxELement">highlightBoxELement</a></li><li><a href="global.html#insertInLinkedLIst">insertInLinkedLIst</a></li><li><a href="global.html#insertVal">insertVal</a></li><li><a href="global.html#loop">loop</a></li><li><a href="global.html#loop_color">loop_color</a></li><li><a href="global.html#popStack">popStack</a></li><li><a href="global.html#producer">producer</a></li><li><a href="global.html#pushStack">pushStack</a></li><li><a href="global.html#removeBoxElm">removeBoxElm</a></li><li><a href="global.html#reset">reset</a></li><li><a href="global.html#searchCode">searchCode</a></li><li><a href="global.html#set_Array_value">set_Array_value</a></li><li><a href="global.html#SetSearchVal">SetSearchVal</a></li><li><a href="global.html#setSize">setSize</a></li><li><a href="global.html#setUpEditor">setUpEditor</a></li><li><a href="global.html#sleep">sleep</a></li><li><a href="global.html#sortCode">sortCode</a></li><li><a href="global.html#unhighlightBoxELement">unhighlightBoxELement</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+<<<<<<< HEAD:docs/stack.js.html
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Wed Oct 27 2021 23:23:27 GMT+0530 (India Standard Time)
+=======
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Thu Oct 28 2021 00:48:27 GMT+0530 (India Standard Time)
+>>>>>>> 2e0cda98858642af020821aed88de8d723a8f2c3:docs/docs_frontend/stack.js.html
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

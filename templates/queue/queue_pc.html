@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Producer Consumer Problem</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+    <link rel="stylesheet" href=" {% static 'css/main.css' %}">
+    <script src="{% static 'js/ace-builds-master/src/ace.js' %}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'js/lib.js' %}"></script>
+    <script src="{% static 'js/pc.js' %}"></script>
+    <script src="{% static 'js/button.js' %}"></script>
+    <script src="{% static 'js/init.js' %}"></script>
+    
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+</head>
+<body>
+    <div class='grid'>
+        <div class="navbar1">
+        
+            <a href="/dashboard">Home</a>
+            <a href="/linkedlist">Linked List</a>
+            <a href="/stack">Stack</a>
+            <a  class="active" href="/queue">Queue</a>
+            <a  href="/searching">Searching</a>
+            <a href="/sorting">Sorting</a>
+           <a id='logout' href="/logout"><button type="button"  style="color:rgb(216, 210, 210); background-color: red;" >Logout</button></a>
+            
+      </div>
+        <div class='col-1-1' id="parent">
+            <div id="editor">void producer() {
+    mutex_lock();
+    if ((front == 0 && rear == size-2) || ((rear+1)%(size) == front)) {
+        sleep();
+    }
+    enqueue();
+    if (front == 0) {
+        wakeup(consumer);
+    }
+    mutex_unlock();
+}
+
+void consumer() {
+    mutex_lock();
+    dequeue();
+    if (front==-1) {
+        sleep();
+    }
+    if ((front == 0 && rear == size-2) || ((rear+1)%(size) == front-1)) {
+        wakeup(producer);
+    }
+    mutex_unlock();
+}</div>
+    </div>
+    <div class='col-1-1' id='animation_box'>
+        <div class="stack">
+            <div id='prods'>
+                <div id='temp2'></div>
+            </div> 
+            <div id='variable_set' class="unselectable">
+                <div id='heap'></div>
+            </div>
+            <div id='cons'>
+                <div id='temp1'></div>
+            </div>                  
+        </div> 
+    </div>
+
+    <div id='control_set'>
+        <button id="play_btn" class='button button_play' onclick="playButton()">PLAY</button>        
+        <button id="step_btn" class='button button_next' onclick="stepButton()">STEP</button>        
+        <button id="reset_btn" class='button button_reset'onclick="resetButton()">RESET</button>
+        <a href="/done/queueAppl"><button class='button button_reset'>Done</button></a>
+    </div>
+
+    <div id='input_set'>
+        <div>
+            <div id='create_struct'>
+                <input type="text" name="" id="max_size" placeholder="Enter Size of queue" class='value_input'>
+                <button type="button" class="value_input value_input_create" onclick="createQueue()">
+                    Create Queue
+                </button>        
+            </div>    
+        </div>
+        <div id='stack_ops'>
+            <div id='stack_push' class='col-1-1'>
+                <!-- <input type="text" name="" id="enqueue_val" class='value_input'> -->
+                <div id='create_prod'>
+                    <select  id="nProd" class='value_input'>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                    <button type="button" class="value_input value_input_push" id="nprod" onclick="createProd()" disabled>
+                    Create Producers
+                    </button>
+                </div>    
+            </div>
+            <div id='stack_pop'  class='col-1-1'>
+                <!-- <input type="text" name="" id="dequeue_val" readonly class='value_input'> -->
+                <div id='create_cons'>
+                    <select  id="nCons" class='value_input'>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                    <button type="button" class="value_input value_input_push" id="ncons" onclick="createCons()" disabled>
+                    Create Consumers
+                    </button>
+                </div>     
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
