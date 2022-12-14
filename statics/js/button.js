@@ -41,11 +41,15 @@ function disbaleCtrlButtons(val='all')
         s.disabled= true;
         r.disabled= true;
         p.disabled= true;
+        p.classList.remove('button_pause');
+        p.innerHTML= 'PLAY';
         clearInterval(interval);
     }else if(val==rst){
         r.disabled=true;
     }else if(val==play){
         p.disabled=true;
+        p.classList.remove('button_pause');
+        p.innerHTML= 'PLAY';
     }else if(val==step){
         s.disabled=true;
     }
@@ -60,10 +64,14 @@ function EnableCtrlButtons(val='all')
         s.disabled= false;
         r.disabled= false;
         p.disabled= false;    
+        p.classList.remove('button_pause');
+        p.innerHTML= 'PLAY';
     }else if(val==rst){
         r.disabled=false;
 
     }else if(val==play){
+        p.classList.remove('button_pause');
+        p.innerHTML= 'PLAY';
         p.disabled=false;
 
     }else if(val==step){

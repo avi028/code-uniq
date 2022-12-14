@@ -69,10 +69,15 @@ arr_itr=0;
 arr=[];
 arrElmSet=null;
 arr_n=0;
-arr_nElm=null;
 search_num = 5;
 search_numElm=null;
-
+mid=0;
+midElem=null;
+high=0;
+highElem=null;
+low=0;
+lowElem=null;
+nElem=null;
 
 
 //mid index initialisation
@@ -95,8 +100,9 @@ id_count=0;
 var interval;
 
 // stores last highlighted line number to remove
-var line_rem_highlight=-1;
+var line_rem_highlight=0;
 
+parent_id='animation_box';
 
  
 
@@ -108,31 +114,25 @@ var line_rem_highlight=-1;
  */
 function loop()
 {
-    parent_id='animation_box';
-    unhighlightBoxELement(search_numElm);
-    unhighlightBoxELement(arr_nElm);
-   
-
-    //remove highlight from code line 
-     
-    if((line_rem_highlight!=-1))
+    //remove highlight from code line      
+    if(code_line_itr != 0 && code_line_itr != main)
     {
         document.getElementsByClassName('foo'+line_rem_highlight)[0].classList.remove('bar');
     }
-    // increment of the current code line
      
-     line_rem_highlight=-1;
-    // check for end of code
-    if(code_line_itr<=code_line_count){
-        document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
-    }
+    unhighlightBoxELement(search_numElm);
+   
+    // // check for end of code
+    // if(code_line_itr<=code_line_count){
+    //     document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
+    // }
 
     // if code line is condition line 
      
     switch(code_line_itr){
-        case (code_end):
+        case code_end:
             line_rem_highlight = code_line_itr;
-            reset();
+            resetCanvas();
             break;
         case main:
             document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
@@ -145,16 +145,15 @@ function loop()
             line_rem_highlight = code_line_itr;
             code_line_itr++;     
             break;
-
         case x_creation:
             document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             search_numElm = draw_variable('x',search_num,parent_id);
             line_rem_highlight = code_line_itr;
             code_line_itr++;  
             break;
-
         case n_calculate:
             document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
+            nElm = draw_variable('n',arr_n,parent_id);
             line_rem_highlight = code_line_itr;
             code_line_itr++;
             break;
@@ -171,10 +170,13 @@ function loop()
 
         case var_declare:
              document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
+             lowElem = draw_variable('low',index_low,parent_id);
+             highElem = draw_variable('high',index_high,parent_id);
              line_rem_highlight = code_line_itr;
              code_line_itr++;
               break;
         case cond1_check:
+            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight = code_line_itr;
             if(index_low<=index_high){
                   code_line_itr = mid_calc;
@@ -188,8 +190,9 @@ function loop()
              index_mid = Math.floor((index_low + index_high)/2); 
              line_rem_highlight = code_line_itr;
              code_line_itr++;
-               break;
+            break;
         case cond2_check:
+            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             highlightBoxELement(search_numElm);
             highlightBoxELement(arrElmSet[index_mid]);
             line_rem_highlight = code_line_itr;
@@ -201,42 +204,47 @@ function loop()
             }
             break;
         case cond3_check:
-            if(search_num<arr[index_mid]){
-                line_rem_highlight = code_line_itr;
-                code_line_itr = new_high;
-                
+            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
+            line_rem_highlight = code_line_itr;
+            if(search_num<arr[index_mid])
+            {
+                code_line_itr = new_high;                
             }
-            else{
-                line_rem_highlight = code_line_itr;
+            else
+            {
                 code_line_itr = new_low;
-                
             }
             break;
         case new_high:
+            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             index_high = index_mid - 1;
             line_rem_highlight = code_line_itr;
             code_line_itr = cond1_check;  
             break ;
         case new_low:
+            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             index_low = index_mid + 1;
             line_rem_highlight = code_line_itr;
             code_line_itr = cond1_check;  
             break ;
         case true_return:
+            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight = code_line_itr;
             code_line_itr=code_end;    
-            break;
+            document.getElementById('idModal').style.display='block';            
+            document.getElementById('idModalText').innerHTML = 'YES!! You Found IT';
+           break;
         case false_return:
+            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight=code_line_itr;
             code_line_itr=code_end;
-            document.getElementById('id01').style.display='block';            
-             break;
+            document.getElementById('idModal').style.display='block';            
+            document.getElementById('idModalText').innerHTML = 'Could not find the Number';
+            break;
         default:
             line_rem_highlight =code_line_itr;
             break;
     }
-    if(line_rem_highlight==-1)
-        line_rem_highlight=code_line_itr;
 } 
 
 
@@ -257,22 +265,32 @@ set_arr_list_Elm=[];
  * set size of a array
  */
 function setSize(){
-    arr_n = parseInt(document.getElementById('max_size_array').value);
-    index_high = arr_n-1;
-    arr=[];
-    for(i=0;i<arr_n;i++){
-        elm = create_html_element('input','input_array_set');
-        elm.setAttribute('class','array_value_input');
-        elm.setAttribute('id','arr_input_search'+i);
-        elm.value=i+1;
-        arr.push(parseInt(document.getElementById('arr_input_search'+i).value));
-        set_arr_list_Elm.push(elm);
+    size_arr = parseInt(document.getElementById('max_size_array').value);
+    reset();
+    if(Number.isInteger(size_arr) && size_arr>0){
+        arr_n = size_arr;
+        document.getElementById('max_size_array').value = arr_n;
+
+        index_high = arr_n-1;
+        arr=[];
+        for(i=0;i<arr_n;i++){
+            elm = create_html_element('input','input_array_set');
+            elm.setAttribute('class','array_value_input');
+            elm.setAttribute('id','arr_input_search'+i);
+            elm.value=Math.floor(Math.random()*100);
+            arr.push(parseInt(document.getElementById('arr_input_search'+i).value));
+            set_arr_list_Elm.push(elm);
+        }
+        editor.setValue(searchCode+arr_n+arraySize+arr+arrayValue+'_'+searchValue);
+        editor.gotoLine(0);   
+        document.getElementById('set_Array_value').disabled = false;
+        document.getElementById('SetSearchVal').disabled = false;
+        EnableCtrlButtons(rst);
     }
-    editor.setValue(searchCode+arr_n+arraySize+arr+arrayValue+'_'+searchValue);
-    editor.gotoLine(0);   
-    document.getElementById('set_Array_value').disabled = false;
-    document.getElementById('SetSearchVal').disabled = false;
-    EnableCtrlButtons(rst);
+    else{
+        document.getElementById('idModal').style.display = 'block';
+        document.getElementById('idModalText').innerHTML = 'Please enter a number greater than zero';
+    }
 }
 
 
@@ -281,8 +299,19 @@ function setSize(){
  */
 function set_Array_value(){
     arr=[];
+    if(arrElmSet!=null){
+        for(i=0;i<arrElmSet.length;i++)
+            removeBoxElm(arrElmSet[i]);
+    }    
     for(itr=0;itr<arr_n;itr++){
-        arr.push(parseInt(document.getElementById('arr_input_search'+itr).value));
+        temp = parseInt(document.getElementById('arr_input_search'+itr).value);
+        if(!Number.isInteger(temp)){
+            document.getElementById('idModal').style.display = 'block';
+            document.getElementById('idModalText').innerHTML = 'Please enter a number;'
+            temp=0;
+        }
+        document.getElementById('arr_input_search'+itr).value = temp;
+        arr[itr]=temp;
     }
     editor.setValue(searchCode+arr_n+arraySize+arr+arrayValue+search_num+searchValue);
     editor.gotoLine(0);   
@@ -295,7 +324,14 @@ function set_Array_value(){
   * set search value in  array  and  enables control buttons .
  */
 function SetSearchVal(){
-    search_num = parseInt(document.getElementById('search_val').value);
+    temp = parseInt(document.getElementById('search_val').value);
+    if(!Number.isInteger(temp)){
+        document.getElementById('idModal').style.display = 'block';
+        document.getElementById('idModalText').innerHTML = 'Please enter a number;'
+        temp=0;
+    }
+    document.getElementById('search_val').value= temp;
+    search_num = temp
     search_num_arr=[search_num];
     editor.setValue(searchCode+arr_n+arraySize+arr+arrayValue+search_num+searchValue);
 
@@ -311,8 +347,6 @@ function SetSearchVal(){
     editor.gotoLine(0);   
     //loop();
     EnableCtrlButtons();  
-    
-    
 }
 
 
@@ -354,34 +388,37 @@ searchValue=`;
 }`;
 
 
-
+function resetCanvas(){
+    clearInterval(interval);
+    code_line_itr=main;
+    if(line_rem_highlight!=0)
+        document.getElementsByClassName('foo'+line_rem_highlight)[0].classList.remove('bar'); 
+    removeBoxElm(search_numElm);
+    while(arrElmSet!=null && arrElmSet.length>0){
+        removeBoxElm(arrElmSet[0]);
+        arrElmSet.shift();
+    }    
+    index_mid=0;
+    index_low=0;
+    index_high=0;
+    EnableCtrlButtons();
+}
 /**
  * Removes binary search animation. Disables setarray and search  
  * buttons. and set the all indexes to zero.
  */
 function reset(){
-    removeBoxElm(search_numElm);
-    code_line_itr=main;
-    for(i=0;i<arr_n;i++){
-        if(arrElmSet!=null){
-            removeBoxElm(arrElmSet[i]);
-            document.getElementById('arr_input_search'+i).remove();
-        }
-        if(set_arr_list_Elm!=null) {
-            set_arr_list_Elm[i].remove();
-        }        
-    }
-    index_mid=0;
-    index_low=0;
-    index_high=0;
+    resetCanvas();
+    while(set_arr_list_Elm!=null && set_arr_list_Elm.length>0) {
+            set_arr_list_Elm[0].remove();
+            set_arr_list_Elm.shift();
+            arr.shift();
+    }        
     document.getElementById('search_val').value='';
     document.getElementById('max_size_array').value='';
     document.getElementById('set_Array_value').disabled = true;
     document.getElementById('SetSearchVal').disabled = true;
     disbaleCtrlButtons();
-    clearInterval(interval);
-    if(line_rem_highlight!=-1)
-        document.getElementsByClassName('foo'+line_rem_highlight)[0].classList.remove('bar'); 
 
     editor.setValue(searchCode+'_ '+arraySize+'_ _ _ _ _ _ '+arrayValue+'_ '+searchValue);
     editor.gotoLine(0);   

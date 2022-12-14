@@ -89,29 +89,39 @@ function setUpEditor(){
     }
 }
 
+function resetCanvas(){
+    clearInterval(interval);
+    code_line_itr=main;
+    if(line_rem_highlight!=0)
+        document.getElementsByClassName('foo'+line_rem_highlight)[0].classList.remove('bar'); 
+    removeBoxElm(index_i);
+    removeBoxElm(index_j);
+    removeBoxElm(temp);
+    while(arrElmSet!=null && arrElmSet.length>0){
+            removeBoxElm(arrElmSet[0]);
+            arrElmSet.shift();
+    }    
+    EnableCtrlButtons();
+}
+
 /**
  * Removes insertion sort animation. Disables setarray and control
  * button. 
  */
  function reset(){
-    code_line_itr=func_name;
-    for(i=0;i<arr_n;i++){
-        if(arrElmSet!=null &&  arrElmSet.length>i){
-            removeBoxElm(arrElmSet[i]);
-            arrElmSet[i].remove();
-        }
-        if(set_arr_list_Elm!=null &&  set_arr_list_Elm.length>i){
-            set_arr_list_Elm[i].remove();
-        }
-    }
+
+    resetCanvas();
+    while(set_arr_list_Elm!=null && set_arr_list_Elm.length>0) {
+            set_arr_list_Elm[0].remove();
+            set_arr_list_Elm.shift();
+            arr.shift();
+    }        
+
     document.getElementById('max_size_array').value='';
     document.getElementById('set_Array_value').disabled = true;
-    removeBoxElm(index_i);
-    removeBoxElm(index_j);
-    removeBoxElm(temp);
     disbaleCtrlButtons();
-    if(line_rem_highlight!=0)
-        document.getElementsByClassName('foo'+line_rem_highlight)[0].classList.remove('bar'); 
+    editor.setValue(sortCode+'_'+arraySize+'_,_,_,_,_'+arrayValue+'_'+restcode);
+    editor.gotoLine(0);
 }
 
 
@@ -142,6 +152,7 @@ function loop() {
             break;
         case arr_decl:
             document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
+            arrElmSet =  draw_array('arr',arr,arr_n,parent_id); 
             line_rem_highlight = code_line_itr;
             code_line_itr++;
             break;
@@ -169,7 +180,7 @@ function loop() {
             document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight = code_line_itr;
             code_line_itr++;
-            reset();
+            resetCanvas();
             break;
         case func_name:
             document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
@@ -313,7 +324,7 @@ function setSize(){
         }
         editor.setValue(sortCode+arr_n+arraySize+arr+arrayValue+arr_n+restcode);
         document.getElementById('set_Array_value').disabled = false;
-        arrElmSet =  draw_array('arr',arr,arr_n,parent_id); 
+        // arrElmSet =  draw_array('arr',arr,arr_n,parent_id); 
         code_line_itr = main;
         editor.gotoLine(0);
         EnableCtrlButtons();
@@ -342,9 +353,8 @@ function set_Array_value(){
             temp=0;
         }
         document.getElementById('arr_input_search'+itr).value = temp;
-        arr.push(temp);
+        arr[itr] = temp;
     }
-    arrElmSet =  draw_array('arr',arr,arr_n,parent_id); 
     editor.setValue(sortCode+arr_n+arraySize+arr+arrayValue+arr_n+restcode);
     code_line_itr = main;
     editor.gotoLine(main);
