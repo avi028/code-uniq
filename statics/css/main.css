@@ -93,7 +93,7 @@ body{
     display: block;
 }
 
-/* for gueue */
+/* for queue */
 .front_val_legend{
     background-color: red;
     color:white;
@@ -110,6 +110,10 @@ body{
     transition: .2s;
 }
 
+.box_label_grey{
+    background-color: darkgray;
+    transition: .2s;
+}
 
 /* *************************************TOH *********************************************************** */
 

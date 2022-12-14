@@ -102,9 +102,11 @@ var interval;
 // stores last highlighted line number to remove
 var line_rem_highlight=0;
 
+// id of the animation box
 parent_id='animation_box';
 
- 
+// last known array value 
+last_arr_itr = -1;
 
 /**
  * This function loops over each line of code in editor by checking 
@@ -121,13 +123,13 @@ function loop()
     }
      
     unhighlightBoxELement(search_numElm);
-   
-    // // check for end of code
-    // if(code_line_itr<=code_line_count){
-    //     document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
-    // }
+    unhighlightBoxELement(lowElem);
+    unhighlightBoxELement(midElem);
+    unhighlightBoxELement(highElem);
 
-    // if code line is condition line 
+    if(last_arr_itr!=-1){
+        grayLightBoxElement(arrElmSet[last_arr_itr]);
+    }
      
     switch(code_line_itr){
         case code_end:
@@ -153,7 +155,7 @@ function loop()
             break;
         case n_calculate:
             document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
-            nElm = draw_variable('n',arr_n,parent_id);
+            nElem = draw_variable('n',arr_n,parent_id);
             line_rem_highlight = code_line_itr;
             code_line_itr++;
             break;
@@ -178,6 +180,9 @@ function loop()
         case cond1_check:
             document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight = code_line_itr;
+            highlightBoxELement(lowElem);
+            highlightBoxELement(highElem);
+            removeBoxElm(midElem);
             if(index_low<=index_high){
                   code_line_itr = mid_calc;
                 }
@@ -189,6 +194,10 @@ function loop()
              document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
              index_mid = Math.floor((index_low + index_high)/2); 
              line_rem_highlight = code_line_itr;
+             highlightBoxELement(lowElem);
+             highlightBoxELement(highElem);
+             midElem = draw_variable('mid',index_mid,parent_id);
+             highlightBoxELement(midElem);
              code_line_itr++;
             break;
         case cond2_check:
@@ -204,6 +213,8 @@ function loop()
             }
             break;
         case cond3_check:
+            highlightBoxELement(search_numElm);
+            highlightBoxELement(arrElmSet[index_mid]);
             document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight = code_line_itr;
             if(search_num<arr[index_mid])
@@ -214,21 +225,29 @@ function loop()
             {
                 code_line_itr = new_low;
             }
+            last_arr_itr=index_mid;
             break;
         case new_high:
             document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             index_high = index_mid - 1;
+            highlightBoxELement(midElem);
+            highlightBoxELement(highElem);
+            highElem.innerHTML = index_high;
             line_rem_highlight = code_line_itr;
             code_line_itr = cond1_check;  
             break ;
         case new_low:
             document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             index_low = index_mid + 1;
+            highlightBoxELement(lowElem);
+            highlightBoxELement(midElem);
+            lowElem.innerHTML = index_low;
             line_rem_highlight = code_line_itr;
             code_line_itr = cond1_check;  
             break ;
         case true_return:
             document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
+            highlightBoxELement(midElem);
             line_rem_highlight = code_line_itr;
             code_line_itr=code_end;    
             document.getElementById('idModal').style.display='block';            
@@ -260,6 +279,17 @@ function loop_color(){
 // array intialisation
 set_arr_list_Elm=[];
 
+function insertionSort(){
+    for(i=0;i<arr_n;i++){
+        j=i;
+        while(j>0 && arr[j-1]>arr[j]){
+            tmp = arr[j-1];
+            arr[j-1]=arr[j];
+            arr[j]=tmp;
+            j--;
+        }
+    }
+}
 
 /**
  * set size of a array
@@ -274,11 +304,16 @@ function setSize(){
         index_high = arr_n-1;
         arr=[];
         for(i=0;i<arr_n;i++){
+            arr.push(Math.floor(Math.random()*100));
+        }
+
+        insertionSort();
+
+        for(i=0;i<arr_n;i++){
             elm = create_html_element('input','input_array_set');
             elm.setAttribute('class','array_value_input');
             elm.setAttribute('id','arr_input_search'+i);
-            elm.value=Math.floor(Math.random()*100);
-            arr.push(parseInt(document.getElementById('arr_input_search'+i).value));
+            elm.value=arr[i];
             set_arr_list_Elm.push(elm);
         }
         editor.setValue(searchCode+arr_n+arraySize+arr+arrayValue+'_'+searchValue);
@@ -390,6 +425,7 @@ searchValue=`;
 
 function resetCanvas(){
     clearInterval(interval);
+    last_arr_itr = -1;
     code_line_itr=main;
     if(line_rem_highlight!=0)
         document.getElementsByClassName('foo'+line_rem_highlight)[0].classList.remove('bar'); 
@@ -399,8 +435,13 @@ function resetCanvas(){
         arrElmSet.shift();
     }    
     index_mid=0;
+    removeBoxElm(midElem);
     index_low=0;
-    index_high=0;
+    removeBoxElm(lowElem);
+    index_high=arr_n;
+    removeBoxElm(highElem);
+
+    removeBoxElm(nElem);
     EnableCtrlButtons();
 }
 /**

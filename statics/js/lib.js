@@ -175,6 +175,19 @@ function unhighlightBoxELement(elm){
 }
 
 /**
+ * Adds element highlight by adding a required class from it.
+ * 
+ * @param {object} elm 
+ */
+function grayLightBoxElement(elm){
+    if(elm!=null){
+        if(elm.classList.contains('box_label_active')){
+            elm.classList.remove('box_label_active');
+        }
+        elm.classList.add('box_label_grey');
+    }
+}
+/**
  * Removes box type element
  * @param {object} elm - HTML element
  *  
