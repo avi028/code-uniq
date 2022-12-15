@@ -35,6 +35,7 @@ var linkedlist_arr = [];
 
 // size of queue
 var size=hashtable_size;
+hashSizeElem = null;
 
 // Key to be inserted
 var key_elem = null;
@@ -82,61 +83,69 @@ function loop() {
     unhighlightBoxELement(index_elem);
     unhighlightBoxELement(key_elem);
     unhighlightBoxELement(linkedlist_arr[index_val].box_list[linkedlist_arr[index_val].box_list.length-1]);
-    document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
+    if(code_line_itr > 0 && code_line_itr<=code_line_count)
+        document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
+    
     switch (code_line_itr) {
         case insertintoHash_func:
+            key_elem = draw_variable("value",'',"temp");
+            hashSizeElem = draw_variable("hashtableSize",'',"temp");
+            key_elem.innerHTML = key_val;
+            hashSizeElem.innerHTML = hashtable_size;
             line_rem_highlight = code_line_itr;
             code_line_itr++;
             break;
         case index_cal_1:
             line_rem_highlight = code_line_itr;
+            index_elem = draw_variable("index",'',"temp");
             index_val = key_val % hashtable_size;
             index_elem.innerHTML = index_val;
             highlightBoxELement(index_elem);
+            highlightBoxELement(key_elem);
+            highlightBoxELement(hashSizeElem);
             code_line_itr++;
             break;
         case insert_into_LL_func_call:
             line_rem_highlight = code_line_itr;
             linkedlist_arr[index_val].insert(key_val);
             highlightBoxELement(linkedlist_arr[index_val].box_list[linkedlist_arr[index_val].box_list.length-1]);
+            highlightBoxELement(index_elem);
+            highlightBoxELement(key_elem);
             code_line_itr++;
             break;
         case insertintoHash_func_end:
             line_rem_highlight = code_line_itr;
-            key_elem.innerHTML = '';
-            index_elem.innerHTML = '';
-            code_line_itr = 0;
-            document.getElementsByClassName('foo'+line_rem_highlight)[0].classList.remove('bar');
-            playButton(0);
-            disbaleCtrlButtons(play);
-            disbaleCtrlButtons(step);
+            resetCanvas();
             break;
         case deletefromHash_func:
+            key_elem = draw_variable("value",'',"temp");
+            hashSizeElem = draw_variable("hashtableSize",'',"temp");
+            key_elem.innerHTML = key_val;
+            hashSizeElem.innerHTML = hashtable_size;
             line_rem_highlight = code_line_itr;
             code_line_itr++;
             break;
         case index_cal_2:
             line_rem_highlight = code_line_itr;
+            index_elem = draw_variable("index",'',"temp");
             index_val = key_val % hashtable_size;
             index_elem.innerHTML = index_val;
-            highlightBoxELement(linkedlist_arr[index_val].box_list[linkedlist_arr[index_val].box_list.length-1]);
             highlightBoxELement(index_elem);
+            highlightBoxELement(key_elem);
+            highlightBoxELement(hashSizeElem);
             code_line_itr++;
             break;
         case delete_from_LL_func_call:
             line_rem_highlight = code_line_itr;
+            highlightBoxELement(linkedlist_arr[index_val].box_list[linkedlist_arr[index_val].box_list.length-1]);
+            highlightBoxELement(index_elem);
+            highlightBoxELement(key_elem);
             linkedlist_arr[index_val].delete(key_val);
             code_line_itr++;
             break;
         case deletefromHash_func_end:
             line_rem_highlight = code_line_itr;
-            key_elem.innerHTML = '';
-            index_elem.innerHTML = '';
-            code_line_itr = 0;
-            document.getElementsByClassName('foo'+line_rem_highlight)[0].classList.remove('bar');
-            playButton(0);
-            disbaleCtrlButtons(play);
-            disbaleCtrlButtons(step);
+            resetCanvas();
             break;
     }
 }
@@ -146,13 +155,16 @@ function loop() {
  */
 function insertVal() {
     let val = parseInt(document.getElementById("insert_val").value);
-    if (!isNaN(val)) {
-        key_elem.innerHTML = val;
+    if (Number.isInteger(val)) {
+        document.getElementById("insert_val").value= val;
         key_val = val;
         code_line_itr = insertintoHash_func;
-        highlightBoxELement(key_elem);
         EnableCtrlButtons();
     } 
+    else{
+        document.getElementById('idModal').style.display= 'block';
+        document.getElementById('idModalp').innerHTML = 'Please enter a number';
+    }
 }
 
 /**
@@ -160,12 +172,15 @@ function insertVal() {
  */
 function deleteVal() {
     let val = parseInt(document.getElementById("delete_val").value);
-    if (!isNaN(val)) {
-        key_elem.innerHTML = val;
+    if (Number.isInteger(val)) {
+        document.getElementById("delete_val").value= val;
         key_val = val;
         code_line_itr = deletefromHash_func;
-        highlightBoxELement(key_elem);
         EnableCtrlButtons();
+    }
+    else{
+        document.getElementById('idModal').style.display= 'block';
+        document.getElementById('idModalp').innerHTML = 'Please enter a number';
     }
 }
 
@@ -175,11 +190,12 @@ function deleteVal() {
  * Enables reset button.
  */
 function createHashTable(){
+    size_val = parseInt(document.getElementById("max_size").value);
+    reset();
     if (!linkedlist_arr[0]) {
-        hashtable_size = parseInt(document.getElementById("max_size").value);
-        if(isNaN(hashtable_size) || hashtable_size==0)
-        document.getElementById('id03').style.display='block';
-        else{
+        if(Number.isInteger(size_val) && size_val >0 ){
+            document.getElementById("max_size").value = size_val;
+            hashtable_size = size_val;
             for (let i=0; i<hashtable_size; i++) {
                 var div = document.createElement('div');
                 div.setAttribute('id',"hc_"+i);
@@ -192,10 +208,12 @@ function createHashTable(){
                 linkedlist_obj.linkedListField.legend = "Index";
                 linkedlist_arr.push(linkedlist_obj);
             } 
-            key_elem = draw_variable("Key",'',"temp");
-            index_elem = draw_variable("Index",'',"temp");
             document.getElementById("insert").disabled = false;
             document.getElementById("delete").disabled = false;    
+        }
+        else{
+            document.getElementById('idModal').style.display= 'block';
+            document.getElementById('idModalp').innerHTML = 'Please enter a number';    
         }
     }
     EnableCtrlButtons(rst);
@@ -208,22 +226,38 @@ function loop_color(){
     interval = setInterval(loop,1000);
 }
 
+
+function resetCanvas(){
+    clearInterval(interval);
+    code_line_itr=0;
+    if(line_rem_highlight!=0)
+        document.getElementsByClassName('foo'+line_rem_highlight)[0].classList.remove('bar');
+    removeBoxElm(index_elem);
+    removeBoxElm(key_elem);
+    removeBoxElm(hashSizeElem);    
+    disbaleCtrlButtons();
+    EnableCtrlButtons(rst);
+}
+
 /**
  * Removes linked list animation. Disables insert and delete buttons. 
  */
+
 function reset(){
+    resetCanvas();
     if(linkedlist_arr[0]!=null) {
         for (let i=0; i<hashtable_size; i++) {
             linkedlist_arr[i].linkedListField.remove();
         }
     }
-    removeBoxElm(index_elem);
-    removeBoxElm(key_elem);
     index_val = 0;
     key_val = 0;
+    linkedlist_arr =[];
     document.getElementById("insert").disabled = true;
     document.getElementById("delete").disabled = true;
-    linkedlist_arr =[];
-    if(line_rem_highlight!=0)
-    document.getElementsByClassName('foo'+line_rem_highlight)[0].classList.remove('bar'); 
+    document.getElementById("max_size").value = '';
+    document.getElementById("insert_val").value = '';
+    document.getElementById("delete_val").value = '';
+
+    disbaleCtrlButtons();     
 }

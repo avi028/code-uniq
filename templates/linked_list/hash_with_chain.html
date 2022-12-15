@@ -25,12 +25,12 @@
             
            </div>
 
-           <div id="id03" class="popup">
+           <div id="idModal" class="popup">
             <div class="modal-content">
-           <span onclick="document.getElementById('id03').style.display='none'" class="close">&times;</span>
-           <p style="color: 	#3f0f0f;font-family:  'Autour One';font-size: 20px;">Error in Size.</p>
-         </div>
-         </div>
+                <span onclick="document.getElementById('idModal').style.display='none'" class="close">&times;</span>
+                <p id = "idModalp" style="color: 	#3f0f0f;font-family:  'Autour One';font-size: 20px;"></p>
+            </div>
+        </div>
         <div class='col-1-1' id="parent">
             <div id="editor">struct node {
     int val;
@@ -43,29 +43,18 @@ void createHashTable(int size) {
     hashtable = malloc(size * sizeof(struct node*));
 }
 
-void insertIntoHashTable(int val) {
+void insertIntoHashTable(int val,int hashtableSize) {
     int index = val % hashtableSize;
     hashtable[index].insert(val);
 }
 
-void deleteFromHashTable(int val) {
+void deleteFromHashTable(int val,int hashtableSize) {
     int index = val % hashtableSize;
     hashtable[index].delete(val);
 }</div>
     </div>
     <div class='col-1-1' id='animation_box'>
         <div id='temp'></div>
-        <!-- <div class="stack">
-            <div id='prods'>
-                <div id='temp2'></div>
-            </div> 
-            <div id='variable_set' class="unselectable">
-                <div id='heap'></div>
-            </div>
-            <div id='cons'>
-                <div id='temp1'></div>
-            </div>                  
-        </div>  -->
     </div>
 
     <div id='control_set'>
