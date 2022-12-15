@@ -602,11 +602,14 @@ function loop_color(){
 
 function setNoOfDisc()
 {
-    n_disc=parseInt(document.getElementById('nDisc_val').value);
-    editor.setValue(code1+n_disc+code2);
-    EnableCtrlButtons();
+    n_disc=checkInput('nDisc_val',true);
+    if(n_disc!=null){
+        editor.setValue(code1+n_disc+code2);
+        EnableCtrlButtons();
+        document.getElementById('set_ndisc_buton').disabled=true;
+        loop();    
+    }
     document.getElementById('set_ndisc_buton').disabled=true;
-    loop();
 }
 
 code1=`void MoveDisc(struct Stack *src, struct Stack*des, char s, char d) 
@@ -683,4 +686,4 @@ int main() {
     delete aux;
     delete des;
     return 0; 
-}   "`
+}   `

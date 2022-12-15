@@ -281,9 +281,15 @@ function dequeue(){
  * Creates array of n producer buttons and disables create producer button.
  */
 function createProd() {
-    var n_prod = document.getElementById('nProd').value;
-    prod_arr = createButtonArr(n_prod, "Producer", "pbutton", producer, "temp2", false);
-    document.getElementById("nprod").disabled = true;
+    var n_prod = parseInt(document.getElementById('nProd').value);
+    if(Number.isInteger(n_prod) && n_prod>=0){
+        prod_arr = createButtonArr(n_prod, "Producer", "pbutton", producer, "temp2", false);
+        document.getElementById("nprod").disabled = true;
+    }
+    else{
+        document.getElementById('idModalp').innerHTML = 'PLease enter a valid integer';        
+        document.getElementById('idModal').style.display='block';
+    }
 }
 
 
@@ -291,9 +297,15 @@ function createProd() {
  * Creates array of n consumers buttons and disables create consumer button.
  */
 function createCons() {
-    var n_cons = document.getElementById('nCons').value;
-    cons_arr = createButtonArr(n_cons, "Consumer", "cbutton", consumer, "temp1", true);
-    document.getElementById("ncons").disabled = true;
+    var n_cons = parseInt(document.getElementById('nCons').value);
+    if(Number.isInteger(n_cons) && n_cons>=0){
+        cons_arr = createButtonArr(n_cons, "Consumer", "cbutton", consumer, "temp1", true);
+        document.getElementById("ncons").disabled = true;    
+    }
+    else{
+        document.getElementById('idModalp').innerHTML = 'PLease enter a valid integer';        
+        document.getElementById('idModal').style.display='block';
+    }
 }
 
 
@@ -338,7 +350,7 @@ function consumer(consumer) {
 function createQueue(){
     if (!queue_obj) {
         queue_size = parseInt(document.getElementById("max_size").value);
-        if(isNaN(queue_size))
+        if(isNaN(queue_size) && queue_size <= 0)
             alert('Error in size');
         else{
             queue_obj = new Queue(heap, queue_size,'queue');

@@ -352,25 +352,29 @@ function SetSearchVal(){
     if(!Number.isInteger(temp)){
         document.getElementById('idModal').style.display = 'block';
         document.getElementById('idModalText').innerHTML = 'Please enter a number;'
-        temp=0;
     }
-    document.getElementById('search_val').value= temp;
-    search_num = temp
-    search_num_arr=[search_num];
-    editor.setValue(searchCode+arr_n+arraySize+arr+arrayValue+search_num+searchValue);
-
-    // adding marker to each line of code.
-    const r = [];
+    else{
+        document.getElementById('search_val').value= temp;
+        search_num = temp
+        search_num_arr=[search_num];
+        editor.setValue(searchCode+arr_n+arraySize+arr+arrayValue+search_num+searchValue);
     
-    for(itr=0;itr<code_line_count;itr++)
-    {   
-        r[itr] = new Range(itr, 0,itr, 100);    // marking the range for  code line no <itr>
-        r[itr].id = editor.session.addMarker(r[itr],"foo"+(itr+1),"fullLine");  // class foo<id_count> will act as an identifire for each line
-        // console.log(itr);
+        // adding marker to each line of code.
+        const r = [];
+        
+        for(itr=0;itr<code_line_count;itr++)
+        {   
+            r[itr] = new Range(itr, 0,itr, 100);    // marking the range for  code line no <itr>
+            r[itr].id = editor.session.addMarker(r[itr],"foo"+(itr+1),"fullLine");  // class foo<id_count> will act as an identifire for each line
+            // console.log(itr);
+        }
+        code_line_itr = main;
+        editor.gotoLine(code_line_itr);   
+        loop();
+        document.getElementById('set_Array_value').disabled = true;
+        document.getElementById('SetSearchVal').disabled = true;
+        EnableCtrlButtons();  
     }
-    editor.gotoLine(0);   
-    //loop();
-    EnableCtrlButtons();  
 }
 
 
@@ -432,6 +436,8 @@ function resetCanvas(){
 
     removeBoxElm(nElem);
     EnableCtrlButtons();
+    document.getElementById('set_Array_value').disabled = false;
+    document.getElementById('SetSearchVal').disabled = false;
 }
 /**
  * Removes binary search animation. Disables setarray and search  

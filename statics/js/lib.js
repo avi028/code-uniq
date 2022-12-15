@@ -1034,3 +1034,27 @@ class Queue{
         this.rear_pointer.style.left=rectBox['x']-this.reRectOrigin['x']+'px';           
     }
 }
+
+
+function checkInput(valueId,issize){
+    var value = parseInt(document.getElementById(valueId).value);
+    if(Number.isInteger(value) ){
+        if(issize){
+            if(value >=0){
+                return value;
+            }
+            else{
+                document.getElementById('idModalp').innerHTML = 'Size should be a positive integer';
+                document.getElementById('idModal').style.display = 'block';        
+            }
+        }
+        else{
+            return value
+        }
+    }
+    else{
+        document.getElementById('idModalp').innerHTML = 'Please enter a number';
+        document.getElementById('idModal').style.display = 'block';
+    }
+    return null;
+}

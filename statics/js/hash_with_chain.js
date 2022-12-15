@@ -160,6 +160,9 @@ function insertVal() {
         key_val = val;
         code_line_itr = insertintoHash_func;
         EnableCtrlButtons();
+        document.getElementById("insert").disabled = true;
+        document.getElementById("delete").disabled = true;    
+        loop();
     } 
     else{
         document.getElementById('idModal').style.display= 'block';
@@ -177,6 +180,9 @@ function deleteVal() {
         key_val = val;
         code_line_itr = deletefromHash_func;
         EnableCtrlButtons();
+        document.getElementById("insert").disabled = true;
+        document.getElementById("delete").disabled = true;    
+        loop();
     }
     else{
         document.getElementById('idModal').style.display= 'block';
@@ -190,9 +196,9 @@ function deleteVal() {
  * Enables reset button.
  */
 function createHashTable(){
-    size_val = parseInt(document.getElementById("max_size").value);
-    reset();
     if (!linkedlist_arr[0]) {
+        size_val = parseInt(document.getElementById("max_size").value);
+        reset();
         if(Number.isInteger(size_val) && size_val >0 ){
             document.getElementById("max_size").value = size_val;
             hashtable_size = size_val;
@@ -237,6 +243,8 @@ function resetCanvas(){
     removeBoxElm(hashSizeElem);    
     disbaleCtrlButtons();
     EnableCtrlButtons(rst);
+    document.getElementById("insert").disabled = false;
+    document.getElementById("delete").disabled = false;    
 }
 
 /**

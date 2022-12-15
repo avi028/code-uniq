@@ -170,6 +170,8 @@ function loop() {
             playButton(0);
             disbaleCtrlButtons(play);
             disbaleCtrlButtons(step);
+            document.getElementById("push").disabled = false;
+            document.getElementById("pop").disabled = false;       
             break;
         case pop_begin:
             document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
@@ -228,6 +230,8 @@ function loop() {
             playButton(0);
             disbaleCtrlButtons(play);
             disbaleCtrlButtons(step);
+            document.getElementById("push").disabled = false;
+            document.getElementById("pop").disabled = false;       
             break;
     }  
 }
@@ -237,17 +241,17 @@ function loop() {
  * Calls push method of stk_obj type
  */
 function pushStack(){
-    code_line_itr = push_begin;
-    top1 = parseInt(stk_obj.top_val.innerHTML)+1;
-    size = parseInt(stk_obj.size_val.innerHTML);
-    var input = document.getElementById('push_val').value;
-    if(input=='')
-       document.getElementById('id04').style.display='block';
-    else{
+    var input = checkInput('push_val',false);
+    if(input != null){
+        code_line_itr = push_begin;
+        top1 = parseInt(stk_obj.top_val.innerHTML)+1;
+        size = parseInt(stk_obj.size_val.innerHTML);
         stack_content.push(input);
         pushVal=input;
         loop();
-        EnableCtrlButtons();
+        EnableCtrlButtons();    
+        document.getElementById("push").disabled = true;
+        document.getElementById("pop").disabled = true;       
     }
 }
 
@@ -257,11 +261,14 @@ function pushStack(){
  * Calls pop method of stk_obj type
  */
 function popStack(){
+    document.getElementById('pop_val').value='';
     code_line_itr = pop_begin;
     top1 = parseInt(stk_obj.top_val.innerHTML);
     size = parseInt(stk_obj.size_val.innerHTML);
     loop();
     EnableCtrlButtons();
+    document.getElementById("push").disabled = true;
+    document.getElementById("pop").disabled = true;       
 }
 
 /**
@@ -269,11 +276,11 @@ function popStack(){
  */
 function createStack(){
     if (!stk_obj) {
-        stack_size = parseInt(document.getElementById("stack_max_size").value);
-        if(isNaN(stack_size) || stack_size==0)
-        document.getElementById('id03').style.display='block';
-          
-        else{
+        var size_val = checkInput('stack_max_size',true);
+        reset();
+        if(size_val!=null){
+            stack_size = size_val;
+            document.getElementById("stack_max_size").value = size_val;
             stk_obj = new Stack(heap, stack_size,'stack');
             document.getElementById("push").disabled = false;
             document.getElementById("pop").disabled = false;    
@@ -314,5 +321,5 @@ function reset(){
     document.getElementById("pop").disabled = true; 
     stk_obj=null;  
     if(line_rem_highlight!=0) 
-    document.getElementsByClassName('foo'+line_rem_highlight)[0].classList.remove('bar'); 
+        document.getElementsByClassName('foo'+line_rem_highlight)[0].classList.remove('bar'); 
 }

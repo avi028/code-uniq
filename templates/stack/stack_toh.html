@@ -2,15 +2,14 @@
 <html lang="en">
 <head>
     <title>TowerOfHanoi</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
-    <link rel="stylesheet" href=" {% static 'css/main.css' %}">
-    <script src="{% static 'js/ace-builds-master/src/ace.js' %}" type="text/javascript" charset="utf-8"></script>
-    <script src="{% static 'js/lib.js' %}"></script>
-    <script src="{% static 'js/toh.js' %}"></script>
-    <script src="{% static 'js/button.js' %}"></script>
-    <script src="{% static 'js/init.js' %}"></script>
-    <!-- <script src="toh.js" type="text/javascript" charset="utf-8"></script> -->
+    <script src="../../statics/js/ace-builds-master/src/ace.js"></script>
+    <link rel="stylesheet" href="../../statics/css/normalize.css">
+    <link rel="stylesheet" href="../../statics/css/main.css">
+    <script src="../../statics/js/lib.js"></script>
+    <script src="../../statics/js/toh.js"></script>
+    <script src="../../statics/js/button.js"></script>
+    <script src="../../statics/js/init.js"></script>
+    <link href='https://fonts.googleapis.com/css?family=Autour One' rel='stylesheet' >
   
 </head>
 <body>
@@ -26,6 +25,12 @@
            <a id='logout' href="/logout"><button type="button"  style="color:rgb(216, 210, 210); background-color: red;" >Logout</button></a>
             
       </div>
+      <div id="idModal" class="popup">
+        <div class="modal-content">
+            <span onclick="document.getElementById('idModal').style.display='none'" class="close">&times;</span>
+            <p  id="idModalp"  style="color: 	#3f0f0f;font-family:  'Autour One';font-size: 20px;">Error in Input.</p>
+        </div>
+    </div>
         <div class='col-1-1' id="parent" style=width:59%>
             <div id="editor">void MoveDisc(struct Stack *src, struct Stack*des, char s, char d) 
 { 
@@ -152,7 +157,6 @@ int main() {
         <button id="step_btn" class='button button_next' onclick="stepButton()">STEP</button>        
         <button id="step2_btn" style="display:none" onclick="loop()">STEP</button>        
         <button id="reset_btn" class='button button_reset'onclick="resetButton()">RESET</button>
-        <a href="/done/stackAppl"><button class='button button_reset'>Done</button></a>
     </div>
 </body>
 </html>

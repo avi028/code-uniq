@@ -387,6 +387,9 @@ function insertInLinkedLIst(){
             document.getElementById('insert_pos').value = insert_pos;
             code_line_itr=insert_func_begin;
             EnableCtrlButtons();        
+            loop();
+            document.getElementById('insertInLinkedLIst').disabled = true;
+            document.getElementById('deleteFromLinkedList').disabled = true;
         }
         else{
             console.log('error in insert_pos');
@@ -413,6 +416,9 @@ function deleteFromLinkedList(){
         document.getElementById('del_val').value = del_var;
         code_line_itr = del_func_start;
         EnableCtrlButtons();    
+        loop();
+        document.getElementById('insertInLinkedLIst').disabled = true;
+        document.getElementById('deleteFromLinkedList').disabled = true;
     }
     else{
         console.log('error in del_val');
@@ -439,6 +445,8 @@ function resetCanvas(){
     code_line_itr=0;
     editor.gotoLine(code_line_itr);
     EnableCtrlButtons();
+    document.getElementById('insertInLinkedLIst').disabled = false;
+    document.getElementById('deleteFromLinkedList').disabled = false;
 }
 
 /**

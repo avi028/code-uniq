@@ -85,7 +85,7 @@ var temp = 'temp';
 var heap = 'heap';
 
 //constant parent id
-var constants = 'constants'
+var constants = 'constants';
 
 //enqueue html element 
 var enqValElm;
@@ -93,6 +93,8 @@ var enqValElm;
 //dequeue html element
 var deqValElm;
 
+// size of queue
+var sizeElm = null;
 //paarent id 
 var parent_id = 'variable_set';
 
@@ -108,12 +110,17 @@ function loop() {
          document.getElementsByClassName('foo'+line_rem_highlight)[0].classList.remove('bar');
     }
     queue_obj.removeHighlight();
+    document.getElementById("enqueue").disabled = true;
+    document.getElementById("dequeue").disabled = true;    
+
     switch(code_line_itr) {
         case enqueue_begin:
             document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight = code_line_itr;
-            enqValElm=draw_variable('enq_val',' ',queue_obj.sizeElm.parentElement.parentElement.id);
+            enqValElm=draw_variable('value',' ',queue_obj.sizeElm.parentElement.parentElement.id);
             enqValElm.innerHTML = val;
+            sizeElm=draw_variable('size',' ',queue_obj.sizeElm.parentElement.parentElement.id);
+            sizeElm.innerHTML = queue_obj.size;
             code_line_itr++;
             break;
         case overflow_check:
@@ -124,16 +131,15 @@ function loop() {
             if ( queue_obj.rear == queue_obj.size -1) {
                 highlightBoxELement(queue_obj.sizeElm);
                 code_line_itr =enqueue_ret_err;     
-               }
+            }
             else{
-            code_line_itr+=2;
-                }
+                code_line_itr+=2;
+            }
             break;
         case enqueue_ret_err : 
              document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
              line_rem_highlight = code_line_itr;
              code_line_itr = enque_end;
-             //alert("Queue is Full");
              document.getElementById('id01').style.display='block';
              break;
 
@@ -150,7 +156,8 @@ function loop() {
             if(queue_obj.front == -1)
                code_line_itr = front_update;
             else{
-            code_line_itr =rear_ptr_incr;}  
+                code_line_itr =rear_ptr_incr;
+            }  
              break;
 
         case front_update:
@@ -190,12 +197,15 @@ function loop() {
         case enque_end:
             document.getElementsByClassName('foo'+line_rem_highlight)[0].classList.remove('bar');
             line_rem_highlight = code_line_itr;
-            removeBoxElm(enqValElm)
+            removeBoxElm(enqValElm);
+            removeBoxElm(sizeElm);
             clearInterval(interval);
             code_line_itr=0;
             playButton(0);
             disbaleCtrlButtons(play);
             disbaleCtrlButtons(step);
+            document.getElementById("enqueue").disabled = false;
+            document.getElementById("dequeue").disabled = false;    
             break;
         case deque_begin:
             document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
@@ -233,12 +243,10 @@ function loop() {
             line_rem_highlight = code_line_itr;
              if(queue_obj.front >= queue_obj.rear){
                 highlightBoxELement(queue_obj.rearElm);
-                 code_line_itr = front_rear_update;
-                
+                code_line_itr = front_rear_update;
              }
              else{
                 code_line_itr = else3;
-
              }
              break;
         case front_rear_update:
@@ -293,6 +301,8 @@ function loop() {
             playButton(0);
             disbaleCtrlButtons(play);
             disbaleCtrlButtons(step);
+            document.getElementById("enqueue").disabled = false;
+            document.getElementById("dequeue").disabled = false;    
             break;
         default:
              break;
@@ -305,13 +315,16 @@ function loop() {
  * Calls enqueue method of queue_obj type
  */
 function enqueue(){
-    code_line_itr = enqueue_begin;
-    val = document.getElementById('enqueue_val').value;
-    if(val=='')
-    
-    document.getElementById('id04').style.display='block';
-    else
-    EnableCtrlButtons();
+    val = parseInt(document.getElementById('enqueue_val').value);
+    if(Number.isInteger(val) ){
+        code_line_itr = enqueue_begin;
+        loop();
+        EnableCtrlButtons();
+    }   
+    else{
+        document.getElementById('idModalp').innerHTML = 'PLease enter a valid integer';        
+        document.getElementById('idModal').style.display='block';
+    }     
 }
 
 
@@ -320,7 +333,9 @@ function enqueue(){
  */
 function dequeue(){
    code_line_itr = deque_begin;
-    EnableCtrlButtons();
+   document.getElementById("dequeue_val").value = '';
+   loop();
+   EnableCtrlButtons();
 }
 
 
@@ -331,8 +346,10 @@ function dequeue(){
 function createQueue(){
     if (!queue_obj) {
         queue_size = parseInt(document.getElementById("max_size").value);
-        if(isNaN(queue_size) || queue_size ==0)
-           document.getElementById('id03').style.display='block';
+        if(isNaN(queue_size) || queue_size <=0){
+            document.getElementById('idModalp').innerHTML = 'size of the queue has to be a positive integer';
+            document.getElementById('idModal').style.display='block';    
+        }
         else{
             queue_obj = new Queue(heap, queue_size,'queue');
             document.getElementById("enqueue").disabled = false;
@@ -351,8 +368,6 @@ function loop_color(){
     interval = setInterval(loop,1000);
 }
 
-
-
 /**
  * remove queue_obj
  * Removes queue animation. Disables enqueue dequeue buttons. 
@@ -361,21 +376,15 @@ function reset(){
     if(queue_obj!=null)
         queue_obj.remove();
     queue_obj=null;
+    removeBoxElm(enqValElm);
+    removeBoxElm(sizeElm);
+    removeBoxElm(deqValElm);
+    document.getElementById("max_size").value = '';
+    document.getElementById("enqueue_val").value = '';
+    document.getElementById("dequeue_val").value = '';
+
     document.getElementById("enqueue").disabled = true;
     document.getElementById("dequeue").disabled = true;   
-   if(line_rem_highlight!=0)
-   document.getElementsByClassName('foo'+line_rem_highlight)[0].classList.remove('bar'); 
+    if(line_rem_highlight!=0)
+        document.getElementsByClassName('foo'+line_rem_highlight)[0].classList.remove('bar'); 
 }
-
-
-
-
-// var timeout;
-// window.addEventListener('resize', function(event) {
-//     if(queue_obj!=null){
-//  //       this.clearTimeout(timeout);
-//         timeout = setTimeout(queue_obj.set_arrow_position(),1000);
-//     }
-// }, true);
-
-

@@ -102,6 +102,7 @@ function resetCanvas(){
             arrElmSet.shift();
     }    
     EnableCtrlButtons();
+    document.getElementById('set_Array_value').disabled = false;
 }
 
 /**
@@ -137,7 +138,8 @@ function loop() {
     if (code_line_itr != 0 && code_line_itr != main) {
         document.getElementsByClassName('foo'+line_rem_highlight)[0].classList.remove('bar');
     }
-    
+    document.getElementById('set_Array_value').disabled = true;
+
     unhighlightBoxELement(index_i);
     unhighlightBoxELement(index_j);
     unhighlightBoxELement(temp);

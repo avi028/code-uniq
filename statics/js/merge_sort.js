@@ -142,7 +142,8 @@ set_arr_list_Elm=[];
  * animations accordingly.
  */
 async function loop() {
-    
+    document.getElementById('set_Array_value').disabled = true;
+
     if (code_line_itr != main && code_line_itr != 0 && code_line_itr != 12 && code_line_itr != mergesort_func_start) {
         document.getElementsByClassName('foo'+line_rem_highlight)[0].classList.remove('bar');
     }
@@ -710,6 +711,7 @@ function resetCanvas(){
         removeBoxElm(temp_arr2[0]);
         temp_arr2.shift();
     }
+    document.getElementById('set_Array_value').disabled = false;
     EnableCtrlButtons();
 }    
 
