@@ -42,7 +42,7 @@ var size_cal = 47;
 var mergesort_call = 49;
 var printarr = 51;
 var ret0 = 52;
-var end = 53;
+var end_line = 53;
 
  
 // Total line number of code
@@ -115,14 +115,15 @@ curr_size_element = null;
 i_element = null;
 j_element = null;
 k_element = null;
+nElem = null;
 temp_arr1_size_ele = null;
 temp_arr2_size_ele = null;
 temp_arr1 = null;
 temp_arr2 = null;
 arr_H_ele1 = null;
 arr_H_ele2 = null;
-L = [];
-R = [];
+Left_array = [];
+Right_array = [];
 parent_id = "animation_box";
 
 // assigning unique element id's to any new div 
@@ -157,6 +158,7 @@ async function loop() {
     unhighlightBoxELement(temp_arr2_size_ele);
     unhighlightBoxELement(arr_H_ele1);
     unhighlightBoxELement(arr_H_ele2);
+    unhighlightBoxELement(nElem);
 
     if(code_line_itr<=code_line_count){
         editor.gotoLine(code_line_itr);
@@ -170,10 +172,12 @@ async function loop() {
             code_line_itr++;
             break;
         case arr_decl:
+            arrElmSet =  draw_array('arr',arr,arr_n,parent_id); 
             line_rem_highlight = code_line_itr;
             code_line_itr++;
             break;
         case size_cal:
+            nElem = draw_variable('n',arr_n,"variable_set");
             line_rem_highlight = code_line_itr;
             code_line_itr+=2;
             break;
@@ -188,8 +192,9 @@ async function loop() {
         case ret0:
             line_rem_highlight = code_line_itr;
             code_line_itr++;
+            resetCanvas();
             break;
-        case end:
+        case end_line:
             line_rem_highlight = code_line_itr;
             code_line_itr++;
             break;
@@ -221,6 +226,7 @@ async function loop() {
             }
             curr_size_element.innerHTML = curr_size;
             highlightBoxELement(curr_size_element);
+            highlightBoxELement(nElem);
             start = -1;
             start_index.innerHTML = start;
             if (curr_size > arr_n-1) {
@@ -241,6 +247,7 @@ async function loop() {
             } 
             start_index.innerHTML = start;
             highlightBoxELement(start_index);
+            highlightBoxELement(nElem);
             if (start >= arr_n-1) {
                 code_line_itr = for_loop_1_end;
             } 
@@ -254,6 +261,7 @@ async function loop() {
             mid_element = draw_variable('mid', mid, "variable_set");
             mid_element.innerHTML = mid;
             highlightBoxELement(mid_element);
+            highlightBoxELement(nElem);
             code_line_itr++;
             break;
         case right_end_ass: 
@@ -263,6 +271,7 @@ async function loop() {
             end = Math.min(start + 2*curr_size - 1, arr_n-1);
             end_index.innerHTML = end;
             highlightBoxELement(end_index);
+            highlightBoxELement(nElem);
             code_line_itr+=2;
             break;
         case merge_call: 
@@ -302,26 +311,26 @@ async function loop() {
         case L_size_cal:         
             line_rem_highlight = code_line_itr;
             temp_arr1_size = mid - start + 1;
-            temp_arr1_size_ele = draw_variable('n1', temp_arr1_size, "variable_set");
+            temp_arr1_size_ele = draw_variable('Left_array_size', temp_arr1_size, "variable_set");
             highlightBoxELement(temp_arr1_size_ele);
             code_line_itr++;
             break;
         case R_size_cal:          
             temp_arr2_size = end - mid;
-            temp_arr2_size_ele = draw_variable('n2', temp_arr2_size, "variable_set");
+            temp_arr2_size_ele = draw_variable('Right_array_size', temp_arr2_size, "variable_set");
             highlightBoxELement(temp_arr2_size_ele);
             line_rem_highlight = code_line_itr;
             code_line_itr++;
             break;
         case LR_dec:
             line_rem_highlight = code_line_itr;
-            L = []; R = [];
+            Left_array = []; Right_array = [];
             for (i_index = 0; i_index < temp_arr1_size; i_index++)
-                L.push(arr[start + i_index]);
-            temp_arr1 = draw_array('L', L, temp_arr1_size, "heap_row");
+                Left_array.push(0);
+            temp_arr1 = draw_array('Left_array', Left_array, temp_arr1_size, "heap_row");
             for (j_index = 0; j_index < temp_arr2_size; j_index++)
-                R.push(arr[mid + 1 + j_index]);
-            temp_arr2 = draw_array('R', R, temp_arr2_size, "heap_row");
+                Right_array.push(0);
+            temp_arr2 = draw_array('Right_array', Right_array, temp_arr2_size, "heap_row");
             i_index = 0; j_index = 0;
             code_line_itr+=2;
             break;
@@ -340,8 +349,13 @@ async function loop() {
             line_rem_highlight = code_line_itr;
             highlightBoxELement(arrElmSet[start + i_index]);
             highlightBoxELement(temp_arr1[i_index]);
+
             arr_H_ele1 = arrElmSet[start + i_index];
             arr_H_ele2 = temp_arr1[i_index];
+            // Left_array.push(arr[start + i_index]);
+            Left_array[i_index] = arr[start + i_index];
+            arr_H_ele2.innerHTML = arr_H_ele1.innerHTML;
+
             i_element.innerHTML = i_index++;
             highlightBoxELement(start_index);
             highlightBoxELement(i_element);
@@ -364,6 +378,10 @@ async function loop() {
             highlightBoxELement(temp_arr2[j_index]);
             arr_H_ele1 = arrElmSet[mid + 1 + j_index];
             arr_H_ele2 = temp_arr2[j_index];
+            // Right_array.push(arr[mid + 1 + j_index]);
+            Right_array[j_index] = arr[mid + 1 + j_index];
+            arr_H_ele2.innerHTML = arr_H_ele1.innerHTML;
+
             j_element.innerHTML = j_index++;
             highlightBoxELement(j_element);
             highlightBoxELement(mid_element);
@@ -397,7 +415,7 @@ async function loop() {
             line_rem_highlight = code_line_itr;
             highlightBoxELement(temp_arr1[i_index]);
             highlightBoxELement(temp_arr2[j_index]);
-            if (L[i_index] > R[j_index]) {
+            if (Left_array[i_index] > Right_array[j_index]) {
                 code_line_itr = if_end;
             }
             else {
@@ -406,12 +424,12 @@ async function loop() {
             break;
         case arr_ele_ass_1:
             line_rem_highlight = code_line_itr;
-            arrElmSet[k_index].innerHTML = L[i_index];
+            arrElmSet[k_index].innerHTML = Left_array[i_index];
             arr_H_ele1 = arrElmSet[k_index];
             arr_H_ele2 = temp_arr1[i_index];
             highlightBoxELement(arrElmSet[k_index]);
             highlightBoxELement(temp_arr1[i_index]);
-            arr[k_index++] = L[i_index++];
+            arr[k_index++] = Left_array[i_index++];
             i_element.innerHTML = i_index;
             highlightBoxELement(i_element);
             k_element.innerHTML = k_index;
@@ -424,7 +442,7 @@ async function loop() {
             break;
         case else_cond:
             line_rem_highlight = code_line_itr;
-            if (L[i_index] < R[j_index]) {
+            if (Left_array[i_index] < Right_array[j_index]) {
                 code_line_itr = else_end;
             }
             else {
@@ -433,12 +451,12 @@ async function loop() {
             break;
         case arr_ele_ass_2:
             line_rem_highlight = code_line_itr;
-            arrElmSet[k_index].innerHTML = R[j_index];
+            arrElmSet[k_index].innerHTML = Right_array[j_index];
             arr_H_ele1 = arrElmSet[k_index];
             arr_H_ele2 = temp_arr2[j_index];
             highlightBoxELement(arrElmSet[k_index]);
             highlightBoxELement(temp_arr2[j_index]);
-            arr[k_index++] = R[j_index++];
+            arr[k_index++] = Right_array[j_index++];
             j_element.innerHTML = j_index;
             highlightBoxELement(j_element);
             k_element.innerHTML = k_index;
@@ -466,12 +484,12 @@ async function loop() {
             break;
         case arr_ele_ass_3:
             line_rem_highlight = code_line_itr;
-            arrElmSet[k_index].innerHTML = L[i_index];
+            arrElmSet[k_index].innerHTML = Left_array[i_index];
             arr_H_ele1 = arrElmSet[k_index];
             arr_H_ele2 = temp_arr1[i_index];
             highlightBoxELement(arrElmSet[k_index]);
             highlightBoxELement(temp_arr1[i_index]);
-            arr[k_index++] = L[i_index++];
+            arr[k_index++] = Left_array[i_index++];
             i_element.innerHTML = i_index;
             highlightBoxELement(i_element);
             k_element.innerHTML = k_index;
@@ -493,12 +511,12 @@ async function loop() {
             break;
         case arr_ele_ass_4:
             line_rem_highlight = code_line_itr;
-            arrElmSet[k_index].innerHTML = R[j_index];
+            arrElmSet[k_index].innerHTML = Right_array[j_index];
             arr_H_ele1 = arrElmSet[k_index];
             arr_H_ele2 = temp_arr2[j_index];
             highlightBoxELement(arrElmSet[k_index]);
             highlightBoxELement(temp_arr2[j_index]);
-            arr[k_index++] = R[j_index++];
+            arr[k_index++] = Right_array[j_index++];
             j_element.innerHTML = j_index;
             highlightBoxELement(j_element);
             k_element.innerHTML = k_index;
@@ -516,13 +534,13 @@ async function loop() {
             removeBoxElm(k_element);
             removeBoxElm(temp_arr1_size_ele);
             removeBoxElm(temp_arr2_size_ele);
-            for(var i=0;i<temp_arr1_size;i++) {
-                if(temp_arr1!=null)
-                    removeBoxElm(temp_arr1[i]);
+            while(temp_arr1!=null && temp_arr1.length > 0){        
+                removeBoxElm(temp_arr1[0]);
+                temp_arr1.shift();
             }
-            for(var i=0;i<temp_arr2_size;i++){
-                if(temp_arr2!=null)
-                    removeBoxElm(temp_arr2[i]);
+            while(temp_arr2!=null && temp_arr2.length > 0){        
+                removeBoxElm(temp_arr2[0]);
+                temp_arr2.shift();
             }
             code_line_itr = for_loop_2_end;
             break;
@@ -542,80 +560,105 @@ function loop_color(){
 /**
  * set size of a array
  */
-function setSize(){
-    arr_n = parseInt(document.getElementById('max_size_array').value);
-    arr=[];
-    for(i=0;i<arr_n;i++){
-        elm = create_html_element('input','input_array_set');
-        elm.setAttribute('class','array_value_input');
-        elm.setAttribute('id','arr_input_search'+i);
-        elm.value=arr_n - i;
-        arr.push(parseInt(document.getElementById('arr_input_search'+i).value));
-        set_arr_list_Elm.push(elm);
+ function setSize(){
+    size_arr = parseInt(document.getElementById('max_size_array').value);
+    reset();
+    if(Number.isInteger(size_arr) && size_arr>0){
+        arr_n=size_arr;
+        document.getElementById('max_size_array').value=arr_n;
+        arr=[];
+        set_arr_list_Elm=[];
+        for(i=0;i<arr_n;i++){
+            elm = create_html_element('input','input_array_set');
+            elm.setAttribute('class','array_value_input');
+            elm.setAttribute('id','arr_input_search'+i);
+            elm.value=Math.floor(Math.random()*100);
+            arr.push(parseInt(document.getElementById('arr_input_search'+i).value));
+            set_arr_list_Elm.push(elm);
+        }
+        editor.setValue(sortCode+arr_n+arraySize+arr+arrayValue+arr_n+restcode);
+        document.getElementById('set_Array_value').disabled = false;
+        // arrElmSet =  draw_array('arr',arr,arr_n,parent_id); 
+        code_line_itr = main;
+        editor.gotoLine(0);
+        EnableCtrlButtons();
     }
-    document.getElementById('set_Array_value').disabled = false;
-    EnableCtrlButtons(rst);
+    else{
+        document.getElementById('idModal').style.display = 'block';
+        document.getElementById('idModalText').innerHTML = 'Please enter a number greater than zero';
+    }
 }
+
 
 /**
  * set value of a array and enable the control buttons 
  */
-function set_Array_value(){
+ function set_Array_value(){
     arr=[];
+    if(arrElmSet!=null){
+        for(i=0;i<arrElmSet.length;i++)
+            removeBoxElm(arrElmSet[i]);
+    }    
     for(itr=0;itr<arr_n;itr++){
-        arr.push(parseInt(document.getElementById('arr_input_search'+itr).value));
+        temp = parseInt(document.getElementById('arr_input_search'+itr).value);
+        if(!Number.isInteger(temp)){
+            document.getElementById('idModal').style.display = 'block';
+            document.getElementById('idModalText').innerHTML = 'Please enter a number;'
+            temp=0;
+        }
+        document.getElementById('arr_input_search'+itr).value = temp;
+        arr[itr] = temp;
     }
-    arrElmSet =  draw_array('arr', arr, arr_n, parent_id); 
     editor.setValue(sortCode+arr_n+arraySize+arr+arrayValue+arr_n+restcode);
     code_line_itr = main;
+    editor.gotoLine(main);
     EnableCtrlButtons();
 }
-
 
 /**
  * set array value  which are given at run time .
  */
 sortCode=`void mergeSort(int arr[], int n) {
     int curr_size;  
-    int left_start; 
+    int start; 
 
     for (curr_size=1; curr_size <= n-1; curr_size = 2*curr_size) {
-        for (left_start=0; left_start < n-1; left_start += 2*curr_size) {
-            int mid = min(left_start + curr_size - 1, n-1);
-            int right_end = min(left_start + 2*curr_size - 1, n-1);
+        for (start=0; start < n-1; start += 2*curr_size) {
+            int mid = min(start + curr_size - 1, n-1);
+            int end = min(start + 2*curr_size - 1, n-1);
             
-            merge(arr, left_start, mid, right_end);
+            merge(arr, start, mid, end);
         }
     }
 }
 
-void merge(int arr[], int l, int m, int r) {
+void merge(int arr[], int start, int mid, int end) {
     int i, j, k;
-    int n1 = m - l + 1;
-    int n2 =  r - m;
-    int L[n1], R[n2];
+    int Left_array_size = mid - start + 1;
+    int Right_array_size =  end - mid;
+    int Left_array[Left_array_size], Right_array[Right_array_size];
 
-    for (i = 0; i < n1; i++)
-        L[i] = arr[l + i];
+    for (i = 0; i < Left_array_size; i++)
+        Left_array[i] = arr[start + i];
 
-    for (j = 0; j < n2; j++)
-        R[j] = arr[m + 1+ j];
+    for (j = 0; j < Right_array_size; j++)
+        Right_array[j] = arr[mid + 1+ j];
 
-    i = 0; j = 0; k = l;
+    i = 0; j = 0; k = start;
     
-    while (i < n1 && j < n2) {
-        if (L[i] <= R[j]) {
-            arr[k++] = L[i++];
+    while (i < Left_array_size && j < Right_array_size) {
+        if (Left_array[i] <= Right_array[j]) {
+            arr[k++] = Left_array[i++];
         }
         else {
-            arr[k++] = R[j++];
+            arr[k++] = Right_array[j++];
         }
     }
-    while (i < n1) {
-        arr[k++] = L[i++];
+    while (i < Left_array_size) {
+        arr[k++] = Left_array[i++];
     }
-    while (j < n2) {
-        arr[k++] = R[j++];
+    while (j < Right_array_size) {
+        arr[k++] = Right_array[j++];
     }
 }
 
@@ -636,21 +679,19 @@ restcode = `;
 }`;
 
 
-/**
- * Removes merge sort animation. Disables setarray and control
- * button. 
- */
-function reset(){
+
+function resetCanvas(){
+    clearInterval(interval);
     code_line_itr=main;
-    for(i=0;i<arr_n;i++){
-        if(arrElmSet!=null)
-            removeBoxElm(arrElmSet[i]);
-            document.getElementById('arr_input_search'+i).remove();
-        if(set_arr_list_Elm!=null)
-            set_arr_list_Elm[i].remove();
+    if(line_rem_highlight!=0){
+        editor.gotoLine(line_rem_highlight);
+        sleep(100);
+        document.getElementsByClassName('foo'+line_rem_highlight)[0].classList.remove('bar'); 
     }
-    document.getElementById('max_size_array').value='';
-    document.getElementById('set_Array_value').disabled = true;
+    while(arrElmSet!=null && arrElmSet.length>0){
+        removeBoxElm(arrElmSet[0]);
+        arrElmSet.shift();
+    }
     removeBoxElm(start_index);
     removeBoxElm(curr_size_element);
     removeBoxElm(mid_element);
@@ -658,18 +699,33 @@ function reset(){
     removeBoxElm(i_element);
     removeBoxElm(j_element);
     removeBoxElm(k_element);
+    removeBoxElm(nElem);
     removeBoxElm(temp_arr1_size_ele);
     removeBoxElm(temp_arr2_size_ele);
-    for(var i=0;i<temp_arr1_size;i++) {
-        if(temp_arr1!=null)
-            removeBoxElm(temp_arr1[i]);
+    while(temp_arr1!=null && temp_arr1.length > 0){        
+        removeBoxElm(temp_arr1[0]);
+        temp_arr1.shift();
     }
-    for(var i=0;i<temp_arr2_size;i++){
-        if(temp_arr2!=null)
-            removeBoxElm(temp_arr2[i]);
+    while(temp_arr2!=null && temp_arr2.length > 0){        
+        removeBoxElm(temp_arr2[0]);
+        temp_arr2.shift();
     }
-    
-    disbaleCtrlButtons();
-    if(line_rem_highlight!=0)
-    document.getElementsByClassName('foo'+line_rem_highlight)[0].classList.remove('bar'); 
+    EnableCtrlButtons();
+}    
+
+/**
+ * Removes merge sort animation. Disables setarray and control
+ * button. 
+ */
+function reset(){
+    resetCanvas();
+    while(set_arr_list_Elm!=null && set_arr_list_Elm.length >0){
+            set_arr_list_Elm[0].remove();
+            set_arr_list_Elm.shift();
+    }
+    document.getElementById('max_size_array').value='';
+    document.getElementById('set_Array_value').disabled = true;    
+    disbaleCtrlButtons();    
+    editor.setValue(sortCode+'_'+arraySize+'_,_,_,_,_'+arrayValue+'_'+restcode);
+    editor.gotoLine(0);
 }

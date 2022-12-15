@@ -2,15 +2,14 @@
 <html lang="en">
 <head>
     <title>Linked-List-Basic Operations</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
-    <link rel="stylesheet" href=" {% static 'css/main.css' %}">
-    <script src="{% static 'js/ace-builds-master/src/ace.js' %}" type="text/javascript" charset="utf-8"></script>
-    <script src="{% static 'js/lib.js' %}"></script>
-    <script src="{% static 'js/linked_list.js' %}"></script>
-    <script src="{% static 'js/button.js' %}"></script>
-    <script src="{% static 'js/init.js' %}"></script>
-    <link href='https://fonts.googleapis.com/css?family=Autour One' rel='stylesheet' >
+    <script src="../../statics/js/ace-builds-master/src/ace.js"></script>
+    <link rel="stylesheet" href="../../statics/css/normalize.css">
+    <link rel="stylesheet" href="../../statics/css/main.css">
+    <script src="../../statics/js/lib.js"></script>
+    <script src="../../statics/js/linked_list.js"></script>
+    <script src="../../statics/js/button.js"></script>
+    <script src="../../statics/js/init.js"></script>
+        <link href='https://fonts.googleapis.com/css?family=Autour One' rel='stylesheet' >
 
     </head>
 <body>
@@ -82,7 +81,6 @@ struct Node{
         <button id="play_btn" class='button button_play' onclick="playButton()">PLAY</button>
         <button id="step_btn" class='button button_next' onclick="stepButton()">STEP</button>
         <button id="reset_btn" class='button button_reset'onclick="resetButton()">RESET</button>
-        <a href="/done/linkedListBo"><button class='button button_reset'>Done</button></a>
     </div>
 
     <div id='input_set'>

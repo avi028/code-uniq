@@ -114,7 +114,8 @@ var insert_pos_storage;
 //delete position variable
 var del_pos_storage;
 
-
+// header pos identifier
+var header_pos ;
 /**
  * This function loops over each line of code in editor by checking 
  * cases according to line number. Every case highlights particular 
@@ -130,11 +131,13 @@ function loop() {
     unhighlightBoxELement(del_varElm);
     linkedListObj.removeHighlight();
     
+    if(code_line_itr<=code_line_count){
+        document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');        
+    }
+
     switch(code_line_itr) {
         case insert_func_begin:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight=code_line_itr;
-
             insert_valElm = draw_variable('new_data',insert_val,temp);
             insert_posElm = draw_variable('pos',insert_pos,temp);
             if(insert_pos > linkedListObj.size)
@@ -145,11 +148,10 @@ function loop() {
             insert_while_itr=0;
             break;
         case insert_while_start:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight=code_line_itr;
-
             highlightBoxELement(insert_posElm);
             highlightBoxELement(linkedListObj.box_list[insert_while_itr]);
+
             if(insert_pos<=0){
                 code_line_itr=insert_while_end;
             }
@@ -158,36 +160,28 @@ function loop() {
             }
             else{
                 code_line_itr=head_to_headNext;
+                header_pos = insert_while_itr;
             }
             break;
         case head_to_headNext:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight=code_line_itr;
-
             highlightBoxELement(linkedListObj.box_list[insert_while_itr]);
             highlightBoxELement(linkedListObj.box_list[insert_while_itr+1]);
-
             code_line_itr = decrement_pos_val;
             break;
         case decrement_pos_val:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight=code_line_itr;
-
             insert_pos-=1;
             insert_posElm.innerHTML = insert_pos;
             highlightBoxELement(insert_posElm);
-
             insert_while_itr+=1;
-
             code_line_itr=insert_while_start;
             break;
         case insert_while_end:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight=code_line_itr;
             code_line_itr = if_pos_val_check;            
             break;
         case if_pos_val_check:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight=code_line_itr;
             highlightBoxELement(insert_posElm);
             if(insert_pos==0)
@@ -197,39 +191,29 @@ function loop() {
             }
             break;
         case if_pos_val_check_true:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight=code_line_itr;
             code_line_itr = if_pos_val_check_end;            
             break;
         case if_pos_val_check_end:
-
             removeBoxElm(insert_posElm);
             removeBoxElm(insert_valElm);
             code_line_itr=insert_func_end+1;
-            clearInterval(interval);
-            playButton(0);
-            disbaleCtrlButtons(play);
-            disbaleCtrlButtons(step);
-            console.log('pos out of bound');
-            document.getElementById('id01p').innerHTML='pos out of bound';
             document.getElementById('id01').style.display='block';
-
+            document.getElementById('id01p').innerHTML='pos out of bound';
+            resetCanvas();
             break;
         case create_new_node:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight=code_line_itr;
 
             linkedListObj.insertAtPos_noappend(insert_val,insert_pos_storage);
-                linkedListObj.box_list[linkedListObj.box_list.length-1].classList.add('hide_box');
+            linkedListObj.box_list[linkedListObj.box_list.length-1].classList.add('hide_box');
             linkedListObj.arrow_list[linkedListObj.arrow_list.length-1].classList.add('hide_box');
-
             linkedListObj.insertTempAtPos(insert_pos_storage);
             highlightBoxELement(linkedListObj.tempBox);
 
             code_line_itr = set_new_node_data;
             break;
         case set_new_node_data:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight=code_line_itr;
 
             linkedListObj.tempBox.innerHTML = insert_val;
@@ -239,8 +223,8 @@ function loop() {
             code_line_itr=set_new_node_next;
             break;
         case set_new_node_next:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight=code_line_itr;
+
             linkedListObj.box_list[linkedListObj.box_list.length-1].classList.remove('hide_box');
             linkedListObj.arrow_list[linkedListObj.arrow_list.length-1].classList.remove('hide_box');
             linkedListObj.appendArray();
@@ -248,21 +232,21 @@ function loop() {
             linkedListObj.box_list[insert_pos_storage].classList.add('hide_box');
             if(linkedListObj.size-1<insert_pos_storage+1)
                 linkedListObj.arrow_list[insert_pos_storage-1].classList.add('hide_box');
-            
+
+            highlightBoxELement(linkedListObj.box_list[header_pos]);
             code_line_itr=set_head_new_node;
             break;
         case set_head_new_node:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight=code_line_itr;
 
             linkedListObj.setArrowPre(insert_pos_storage);
             if(linkedListObj.size-1<insert_pos_storage+1)
                 linkedListObj.arrow_list[insert_pos_storage-1].classList.remove('hide_box');
 
+            highlightBoxELement(linkedListObj.box_list[header_pos]);
             code_line_itr=insert_func_return;
             break;
         case insert_func_return:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight=code_line_itr;
 
             linkedListObj.resetArrowPre(insert_pos_storage);
@@ -283,7 +267,6 @@ function loop() {
             disbaleCtrlButtons(step);
             break;
         case del_func_start:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight=code_line_itr;
             del_varElm = draw_variable('data',del_var,temp);
             
@@ -292,7 +275,6 @@ function loop() {
             code_line_itr = del_while_start;
             break;
         case del_while_start:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight=code_line_itr;
             highlightBoxELement(linkedListObj.box_list[del_while_itr]);
             highlightBoxELement(del_varElm);
@@ -306,7 +288,6 @@ function loop() {
                 code_line_itr = del_while_head_to_head_next;
             break;
         case del_while_head_to_head_next:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight=code_line_itr;
             highlightBoxELement(linkedListObj.box_list[del_while_itr]);
             highlightBoxELement(linkedListObj.box_list[del_while_itr+1]);
@@ -315,13 +296,11 @@ function loop() {
             code_line_itr = del_while_start;
             break;
         case del_while_end:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight=code_line_itr;
 
             code_line_itr = del_if_head_null;
             break;
         case del_if_head_null:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight=code_line_itr;
             highlightBoxELement(linkedListObj.box_list[del_while_itr]);
 
@@ -331,31 +310,23 @@ function loop() {
                 code_line_itr = del_temp_to_head;
             break;
         case del_if_head_null_true:
-            // document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
-            // line_rem_highlight=code_line_itr;
-            console.log('data not found');
             removeBoxElm(del_varElm);
-            code_line_itr=insert_func_end+1;
-            clearInterval(interval);
-            playButton(0);
-            disbaleCtrlButtons(play);
-            disbaleCtrlButtons(step);
             document.getElementById('id01p').innerHTML='data not found';
             document.getElementById('id01').style.display='block';
-
+            resetCanvas();
             break;
         case del_temp_to_head:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight=code_line_itr;
+
             linkedListObj.insertTempAtPos(del_pos_storage-1);
             highlightBoxELement(linkedListObj.tempBox);
             highlightBoxELement(linkedListObj.box_list[del_while_itr]);
             linkedListObj.tempBox.innerHTML = linkedListObj.box_list[del_pos_storage-1].innerHTML;
             linkedListObj.setArrowPost(del_pos_storage-1);
+
             code_line_itr = del_head_to_head_next;
             break;
         case del_head_to_head_next:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight=code_line_itr;
             highlightBoxELement(linkedListObj.box_list[del_while_itr-1]);
             if(linkedListObj.box_list.length >(del_while_itr+1))
@@ -367,7 +338,6 @@ function loop() {
             code_line_itr = del_free_temp;
             break;
         case del_free_temp:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight=code_line_itr;
             linkedListObj.box_list[del_pos_storage].classList.remove('hide_box');
             linkedListObj.delete(del_var);
@@ -375,35 +345,16 @@ function loop() {
             code_line_itr = del_return;
             break;
         case del_return:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight=code_line_itr;
             code_line_itr = del_func_end;
             break;
         case del_func_end:
             removeBoxElm(del_varElm);
-            code_line_itr=insert_func_end+1;
-            clearInterval(interval);
-            playButton(0);
-            disbaleCtrlButtons(play);
-            disbaleCtrlButtons(step);
-            
+            resetCanvas();
             break;
         default:
             break;
     }  
-    // if(linkedListObj.head.classList.contains('hide_box')){
-
-    // }
-    // else{
-    //     linkedListObj.head.classList.add('hide_box');
-    // }
-    // if(linkedListObj.arrow_list.length>0)
-    //     if(linkedListObj.arrow_list[0].classList.contains('hide_box')){
-
-    //     }
-    //     else{
-    //         linkedListObj.arrow_list[0].classList.add('hide_box');
-    //     }
 }
 
 
@@ -413,7 +364,6 @@ function loop() {
 function createLinkedList(){
     if(!linkedListObj){
         linkedListObj = new linkedList(heap);
-        // linkedListObj.head.classList.add('hide_box');
         document.getElementById('animation_box').style.verticalAlign='top';
         document.getElementById('insertInLinkedLIst').disabled = false;
         document.getElementById('deleteFromLinkedList').disabled = false;
@@ -427,23 +377,27 @@ function createLinkedList(){
  * insert value in linked list and enable control buttons.
  */
 function insertInLinkedLIst(){
+    resetCanvas();
+
     insert_val = parseInt(document.getElementById('insert_val').value);
-    if(isNaN(insert_val)){
+    if(Number.isInteger(insert_val)){
+        document.getElementById('insert_val').value = insert_val;
+        insert_pos = parseInt(document.getElementById('insert_pos').value);
+        if(Number.isInteger(insert_pos) && insert_pos > 0){
+            document.getElementById('insert_pos').value = insert_pos;
+            code_line_itr=insert_func_begin;
+            EnableCtrlButtons();        
+        }
+        else{
+            console.log('error in insert_pos');
+            document.getElementById('id01p').innerHTML='position value must be positive integer';
+            document.getElementById('id01').style.display='block';    
+        }
+    }
+    else{
         console.log('error in insert_val');
         document.getElementById('id01p').innerHTML='insert_val blank';
         document.getElementById('id01').style.display='block';
-    }else{
-        insert_pos = parseInt(document.getElementById('insert_pos').value);
-        if(isNaN(insert_pos)){
-                console.log('error in insert_pos');
-                document.getElementById('id01p').innerHTML='position value must be integer';
-                document.getElementById('id01').style.display='block';    
-        }else{
-            code_line_itr=insert_func_begin;
-            // editor.gotoLine(code_line_itr-1);
-            loop();
-            EnableCtrlButtons();        
-        }
     }
 }
 
@@ -453,15 +407,17 @@ function insertInLinkedLIst(){
  * delete values from linked list and enable control buttons.
  */
 function deleteFromLinkedList(){
+    resetCanvas();
     del_var = parseInt(document.getElementById('del_val').value);
-    if(isNaN(del_var)){
-        console.log('error in del_val');
-        document.getElementById('id01p').innerHTML='del value cannot be blank';
-        document.getElementById('id01').style.display='block';
-    }else{
+    if(Number.isInteger(del_var)){
+        document.getElementById('del_val').value = del_var;
         code_line_itr = del_func_start;
-        loop();
         EnableCtrlButtons();    
+    }
+    else{
+        console.log('error in del_val');
+        document.getElementById('id01p').innerHTML='del value Must be an integer';
+        document.getElementById('id01').style.display='block';
     }
 }
 
@@ -473,24 +429,34 @@ function loop_color(){
     interval = setInterval(loop,1000);
 }
 
+function resetCanvas(){
+    clearInterval(interval);
+    removeBoxElm(insert_posElm);
+    removeBoxElm(insert_valElm);
+    removeBoxElm(del_varElm);
+    if(line_rem_highlight!=0)    
+        document.getElementsByClassName('foo'+line_rem_highlight)[0].classList.remove('bar'); 
+    code_line_itr=0;
+    editor.gotoLine(code_line_itr);
+    EnableCtrlButtons();
+}
 
 /**
  * Removes linked list animation. Disables insert and delete buttons. 
  */
 
 function reset(){
+    resetCanvas();
     if(linkedListObj!=null){
         linkedListObj.remove();
     }
     linkedListObj=null;
-    removeBoxElm(insert_posElm);
-    removeBoxElm(insert_valElm);
-    code_line_itr=0;
-    clearInterval(interval);
-    editor.gotoLine(1);
     document.getElementById('insert_val').value='';
     document.getElementById('insert_pos').value='';
     document.getElementById('del_val').value='';
+    document.getElementById('insertInLinkedLIst').disabled = true;
+    document.getElementById('deleteFromLinkedList').disabled = true;
+
     if(line_rem_highlight!=0)    
         document.getElementsByClassName('foo'+line_rem_highlight)[0].classList.remove('bar'); 
     disbaleCtrlButtons();

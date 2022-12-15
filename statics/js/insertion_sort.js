@@ -144,51 +144,46 @@ function loop() {
     unhighlightBoxELement(arr_H_ele1);
     unhighlightBoxELement(arr_H_ele2);
 
+    if(code_line_itr<=code_line_count){
+        document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
+    }
+    
     switch(code_line_itr) {
         case main:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight = code_line_itr;
             code_line_itr++;
             break;
         case arr_decl:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             arrElmSet =  draw_array('arr',arr,arr_n,parent_id); 
             line_rem_highlight = code_line_itr;
             code_line_itr++;
             break;
         case size_cal:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight = code_line_itr;
             code_line_itr+=2;
             break;
         case insertionsort_call:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight = code_line_itr;
             code_line_itr = func_name;
             break;
         case printarr:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight = code_line_itr;
             code_line_itr++;
             break;
         case ret0:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight = code_line_itr;
             code_line_itr++;
             break;
         case end:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight = code_line_itr;
             code_line_itr++;
             resetCanvas();
             break;
         case func_name:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight = code_line_itr;
             code_line_itr++;
             break;
         case var_declare:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             i_val = 0;
             index_i = draw_variable('index_i', 0, parent_id);
             index_i.innerHTML = i_val;
@@ -205,7 +200,6 @@ function loop() {
             code_line_itr++;
             break;
         case for_loop:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight = code_line_itr;
             if (i_val+1 == arr_n) {
                 code_line_itr = for_end;
@@ -216,7 +210,6 @@ function loop() {
             code_line_itr++;
             break;
         case temp_assign:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight = code_line_itr;
             highlightBoxELement(temp);
             temp_element = arr[i_val];
@@ -224,7 +217,6 @@ function loop() {
             code_line_itr++;
             break;
         case j_assign:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight = code_line_itr;
             highlightBoxELement(index_j);
             j_val = i_val - 1;
@@ -232,7 +224,6 @@ function loop() {
             code_line_itr++;
             break;
         case while_loop:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight = code_line_itr;
             arr_H_ele1 = arrElmSet[j_val];
             highlightBoxELement(arrElmSet[j_val]);
@@ -246,7 +237,6 @@ function loop() {
             }
             break;
         case element_movement:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight = code_line_itr;
             arr[j_val+1] = arr[j_val];
             arrElmSet[j_val+1].innerHTML = arr[j_val];
@@ -257,7 +247,6 @@ function loop() {
             code_line_itr++;
             break;
         case j_decrement:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight = code_line_itr;
             j_val--;
             index_j.innerHTML = j_val;
@@ -265,12 +254,10 @@ function loop() {
             code_line_itr = while_loop;
             break;
         case while_end:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight = code_line_itr;
             code_line_itr++;
             break;
         case element_place:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight = code_line_itr;
             arr[j_val+1] = temp_element;
             arrElmSet[j_val+1].innerHTML = temp_element;
@@ -280,12 +267,10 @@ function loop() {
             code_line_itr = for_loop;
             break;
         case for_end:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight = code_line_itr;
             code_line_itr++;
             break;
         case func_end:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight = code_line_itr;
             removeBoxElm(index_i);
             removeBoxElm(index_j);

@@ -131,54 +131,50 @@ function loop()
         grayLightBoxElement(arrElmSet[last_arr_itr]);
     }
      
+    if(code_line_itr<=code_line_count){
+        document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');    
+    }
+
     switch(code_line_itr){
         case code_end:
             line_rem_highlight = code_line_itr;
             resetCanvas();
             break;
         case main:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight = code_line_itr;
             code_line_itr+=2;
             break;
         case array_creation:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             arrElmSet =  draw_array('arr',arr,arr_n,parent_id); 
             line_rem_highlight = code_line_itr;
             code_line_itr++;     
             break;
         case x_creation:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             search_numElm = draw_variable('x',search_num,parent_id);
             line_rem_highlight = code_line_itr;
             code_line_itr++;  
             break;
         case n_calculate:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             nElem = draw_variable('n',arr_n,parent_id);
             line_rem_highlight = code_line_itr;
             code_line_itr++;
             break;
         case function_call:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight = code_line_itr;
             code_line_itr = function_name;
             break;
         case function_name:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight = code_line_itr;
             code_line_itr+=2;
             break;
 
         case var_declare:
-             document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
              lowElem = draw_variable('low',index_low,parent_id);
              highElem = draw_variable('high',index_high,parent_id);
              line_rem_highlight = code_line_itr;
              code_line_itr++;
               break;
         case cond1_check:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight = code_line_itr;
             highlightBoxELement(lowElem);
             highlightBoxELement(highElem);
@@ -191,7 +187,6 @@ function loop()
                 }
                 break;
         case mid_calc:
-             document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
              index_mid = Math.floor((index_low + index_high)/2); 
              line_rem_highlight = code_line_itr;
              highlightBoxELement(lowElem);
@@ -201,7 +196,6 @@ function loop()
              code_line_itr++;
             break;
         case cond2_check:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             highlightBoxELement(search_numElm);
             highlightBoxELement(arrElmSet[index_mid]);
             line_rem_highlight = code_line_itr;
@@ -215,7 +209,6 @@ function loop()
         case cond3_check:
             highlightBoxELement(search_numElm);
             highlightBoxELement(arrElmSet[index_mid]);
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight = code_line_itr;
             if(search_num<arr[index_mid])
             {
@@ -228,7 +221,6 @@ function loop()
             last_arr_itr=index_mid;
             break;
         case new_high:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             index_high = index_mid - 1;
             highlightBoxELement(midElem);
             highlightBoxELement(highElem);
@@ -237,7 +229,6 @@ function loop()
             code_line_itr = cond1_check;  
             break ;
         case new_low:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             index_low = index_mid + 1;
             highlightBoxELement(lowElem);
             highlightBoxELement(midElem);
@@ -246,7 +237,6 @@ function loop()
             code_line_itr = cond1_check;  
             break ;
         case true_return:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             highlightBoxELement(midElem);
             line_rem_highlight = code_line_itr;
             code_line_itr=code_end;    
@@ -254,7 +244,6 @@ function loop()
             document.getElementById('idModalText').innerHTML = 'YES!! You Found IT';
            break;
         case false_return:
-            document.getElementsByClassName('foo'+code_line_itr)[0].classList.add('bar');
             line_rem_highlight=code_line_itr;
             code_line_itr=code_end;
             document.getElementById('idModal').style.display='block';            

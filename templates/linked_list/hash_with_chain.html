@@ -1,17 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Producer Consumer Problem</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
-    <link rel="stylesheet" href=" {% static 'css/main.css' %}">
-    <script src="{% static 'js/ace-builds-master/src/ace.js' %}" type="text/javascript" charset="utf-8"></script>
-    <script src="{% static 'js/lib.js' %}"></script>
-    <script src="{% static 'js/hash_with_chain.js' %}"></script>
-    <script src="{% static 'js/button.js' %}"></script>
-    <script src="{% static 'js/init.js' %}"></script>
+    <title>Hash With chaining</title>
+    <script src="../../statics/js/ace-builds-master/src/ace.js"></script>
+    <link rel="stylesheet" href="../../statics/css/normalize.css">
+    <link rel="stylesheet" href="../../statics/css/main.css">
+    <script src="../../statics/js/lib.js"></script>
+    <script src="../../statics/js/hash_with_chain.js"></script>
+    <script src="../../statics/js/button.js"></script>
+    <script src="../../statics/js/init.js"></script>
     <link href='https://fonts.googleapis.com/css?family=Autour One' rel='stylesheet' >
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
 </head>
 <body>
     <div class='grid'>
@@ -74,7 +72,6 @@ void deleteFromHashTable(int val) {
         <button id="play_btn" class='button button_play' onclick="playButton()">PLAY</button>        
         <button id="step_btn" class='button button_next' onclick="stepButton()">STEP</button>        
         <button id="reset_btn" class='button button_reset'onclick="resetButton()">RESET</button>
-        <a href="/done/linkedListAppl"><button class='button button_reset'>Done</button></a>
     </div>
 
     <div id='input_set'>
